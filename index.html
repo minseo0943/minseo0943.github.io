@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>장민서 | Backend Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --bg2: #141414;
+      --bg3: #1a1a1a;
+      --border: #222;
+      --text: #e8e8e8;
+      --muted: #666;
+      --accent: #4f8ef7;
+      --accent2: #7c3aed;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero-content { max-width: 680px; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .hero-title .name { color: var(--accent); }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 40px;
+      max-width: 540px;
+    }
+    .hero-desc strong { color: var(--text); }
+    .hero-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #3d7cf5; transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: #444; background: var(--bg3); transform: translateY(-1px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-item { }
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── TECH STACK ── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .tech-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      transition: border-color 0.2s;
+    }
+    .tech-card:hover { border-color: #333; }
+    .tech-card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .tag.blue { border-color: rgba(79,142,247,0.3); color: var(--accent); background: rgba(79,142,247,0.08); }
+    .tag.purple { border-color: rgba(124,58,237,0.3); color: #a78bfa; background: rgba(124,58,237,0.08); }
+    .tag.green { border-color: rgba(34,197,94,0.3); color: var(--green); background: rgba(34,197,94,0.08); }
+    .tag.orange { border-color: rgba(245,158,11,0.3); color: var(--yellow); background: rgba(245,158,11,0.08); }
+    .tag.red { border-color: rgba(239,68,68,0.3); color: var(--red); background: rgba(239,68,68,0.08); }
+
+    /* ── PROJECT ── */
+    .project-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 64px;
+      align-items: start;
+    }
+    .project-meta { }
+    .project-name {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+    .project-subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.7; }
+    .project-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .project-info-item { }
+    .project-info-key { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
+    .project-info-val { font-size: 0.9rem; font-weight: 500; }
+    .project-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-card-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+    }
+    .stat-card-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── DECISIONS ── */
+    .decisions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+    .decision-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .decision-card:hover { border-color: rgba(79,142,247,0.3); }
+    .decision-q {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .decision-a { font-size: 0.875rem; color: #aaa; line-height: 1.7; }
+    .decision-a strong { color: var(--text); }
+
+    /* ── TROUBLESHOOTING ── */
+    .trouble-list { display: flex; flex-direction: column; gap: 20px; }
+    .trouble-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: start;
+      transition: border-color 0.2s;
+    }
+    .trouble-card:hover { border-color: #333; }
+    .trouble-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .trouble-icon.red { background: rgba(239,68,68,0.12); }
+    .trouble-icon.yellow { background: rgba(245,158,11,0.12); }
+    .trouble-icon.blue { background: rgba(79,142,247,0.12); }
+    .trouble-icon.purple { background: rgba(124,58,237,0.12); }
+    .trouble-title { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+    .trouble-body { display: flex; flex-direction: column; gap: 8px; }
+    .trouble-row { display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: baseline; }
+    .trouble-key { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding-top: 2px; }
+    .trouble-val { font-size: 0.875rem; color: #bbb; line-height: 1.65; }
+    .trouble-val strong { color: var(--text); }
+    .trouble-result {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    /* ── BEFORE AFTER ── */
+    .ba-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.875rem;
+    }
+    .ba-table th {
+      text-align: left;
+      padding: 10px 16px;
+      background: var(--bg3);
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+    .ba-table th:first-child { border-radius: 8px 0 0 0; }
+    .ba-table th:last-child { border-radius: 0 8px 0 0; }
+    .ba-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .ba-table td:first-child { font-weight: 500; }
+    .ba-table .before { color: var(--red); }
+    .ba-table .after { color: var(--green); font-weight: 600; }
+
+    /* ── EDUCATION ── */
+    .edu-list { display: flex; flex-direction: column; gap: 16px; }
+    .edu-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .edu-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(79,142,247,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .edu-name { font-weight: 700; font-size: 0.95rem; }
+    .edu-desc { font-size: 0.83rem; color: var(--muted); margin-top: 2px; }
+    .edu-badge {
+      margin-left: auto;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.25);
+      color: var(--yellow);
+      white-space: nowrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-left { font-size: 0.85rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      section { padding: 80px 24px; }
+      #hero { padding: 100px 24px 60px; }
+      .project-header { grid-template-columns: 1fr; }
+      .decisions-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .trouble-card { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">ms<span>.</span>dev</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero" style="padding-top:0; margin:0; max-width:100%">
+  <section style="padding-top:0; margin:0 auto; max-width:1100px; padding: 140px 48px 80px;">
+    <div class="hero-content reveal">
+      <div class="hero-badge">신입 백엔드 개발자 · 구직 중</div>
+      <h1 class="hero-title">안녕하세요,<br /><span class="name">장민서</span>입니다.</h1>
+      <p class="hero-desc">
+        <strong>실서비스 운영에서 배운 안정성과 확장성을 설계하는 백엔드 개발자.</strong><br />
+        10,000+명이 사용하는 AI 레시피 플랫폼을 직접 기획·설계·운영하며,
+        실제 장애를 통해 구조적 사고와 문제 해결 능력을 키웠습니다.
+      </p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="https://recipio.kr" target="_blank">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          서비스 바로가기
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/minseo0943" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-ghost" href="mailto:minseo0943@email.com">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Contact
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">10,000<span>+</span></div>
+          <div class="stat-label">누적 가입자</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">700<span>+</span></div>
+          <div class="stat-label">DAU</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">14.3<span>ms</span></div>
+          <div class="stat-label">평균 응답시간</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">829<span>+</span></div>
+          <div class="stat-label">내 커밋 수</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<hr class="divider" />
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="reveal">
+    <p class="section-label">Tech Stack</p>
+    <h2 class="section-title">기술 스택</h2>
+  </div>
+  <div class="tech-grid reveal">
+    <div class="tech-card">
+      <div class="tech-card-label">Backend</div>
+      <div class="tech-tags">
+        <span class="tag blue">Java 17</span>
+        <span class="tag blue">Spring Boot 3.4</span>
+        <span class="tag">Spring Security</span>
+        <span class="tag">Spring Data JPA</span>
+        <span class="tag">QueryDSL</span>
+        <span class="tag">WebSocket · STOMP</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-label">Search & Cache</div>
+      <div class="tech-tags">
+        <span class="tag orange">OpenSearch 2.17</span>
+        <span class="tag orange">Nori 형태소 분석기</span>
+        <span class="tag red">Redis Cluster</span>
+        <span class="tag">Caffeine Cache</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-label">AI / Resilience</div>
+      <div class="tech-tags">
+        <span class="tag purple">Grok API (xAI)</span>
+        <span class="tag purple">Gemini (Google)</span>
+        <span class="tag purple">Vertex AI Imagen</span>
+        <span class="tag red">Resilience4j</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-label">Infra & DevOps</div>
+      <div class="tech-tags">
+        <span class="tag orange">AWS ECS · ECR · S3</span>
+        <span class="tag">Docker</span>
+        <span class="tag">GitHub Actions</span>
+        <span class="tag green">Prometheus</span>
+        <span class="tag green">Grafana</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-label">Auth & Database</div>
+      <div class="tech-tags">
+        <span class="tag blue">OAuth2 (4사)</span>
+        <span class="tag">JWT</span>
+        <span class="tag">MySQL 8.0</span>
+        <span class="tag">HikariCP</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-label">Monitoring & Async</div>
+      <div class="tech-tags">
+        <span class="tag green">Prometheus · Grafana</span>
+        <span class="tag">MDC 컨텍스트 전파</span>
+        <span class="tag">CompletableFuture</span>
+        <span class="tag">Spring @Async</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PROJECT -->
+<section id="project">
+  <div class="reveal">
+    <p class="section-label">Project</p>
+    <h2 class="section-title">Recipio</h2>
+  </div>
+  <div class="project-header reveal">
+    <div class="project-meta">
+      <p class="project-subtitle">
+        AI가 레시피를 생성하고, 냉장고 속 재료 기반으로 추천하며,<br />
+        유튜브 영상에서 레시피를 자동 추출하는 실서비스 플랫폼.<br /><br />
+        직접 기획하고 런칭해 10,000+명이 실제로 사용 중.
+      </p>
+      <div class="project-info-grid">
+        <div class="project-info-item">
+          <div class="project-info-key">기간</div>
+          <div class="project-info-val">2025.03 ~ 현재</div>
+        </div>
+        <div class="project-info-item">
+          <div class="project-info-key">팀 구성</div>
+          <div class="project-info-val">Backend 2명 · Frontend 1명</div>
+        </div>
+        <div class="project-info-item">
+          <div class="project-info-key">내 역할</div>
+          <div class="project-info-val">AI · 검색 · 인증 · 인프라</div>
+        </div>
+        <div class="project-info-item">
+          <div class="project-info-key">서비스</div>
+          <div class="project-info-val"><a href="https://recipio.kr" target="_blank" style="color:var(--accent);text-decoration:none;">recipio.kr</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-stats">
+      <div class="stat-card">
+        <div class="stat-card-num">10,000+</div>
+        <div class="stat-card-label">누적 가입자</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num">700+</div>
+        <div class="stat-card-label">DAU</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num">14.3ms</div>
+        <div class="stat-card-label">평균 응답시간</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num">829+</div>
+        <div class="stat-card-label">내 커밋 수</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECISIONS -->
+  <div class="reveal">
+    <h3 style="font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;color:#aaa;">기술적 의사결정</h3>
+    <div class="decisions-grid">
+      <div class="decision-card">
+        <div class="decision-q">왜 OpenSearch + Nori인가?</div>
+        <div class="decision-a">MySQL LIKE 검색으로 시작했지만 "김치찌개"를 "김치"로 검색할 수 없었습니다. <strong>한글 형태소 분석</strong>이 필요했고, AWS 관리형으로 운영 부담을 줄일 수 있는 OpenSearch + Nori를 선택했습니다. 장애 시 QueryDSL로 자동 폴백되는 이중 구조로 검색이 완전히 죽지 않도록 설계했습니다.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-q">왜 Resilience4j 3중 보호인가?</div>
+        <div class="decision-a">AI API는 외부 서비스라 언제든 장애가 날 수 있습니다. <strong>CircuitBreaker</strong>로 연쇄 장애를 차단하고, <strong>Retry</strong>로 일시적 오류를 재시도하고, <strong>TimeLimiter</strong>로 무한 대기를 방지합니다. 이 3가지를 조합해 AI 서비스가 죽어도 나머지 기능은 정상 동작하는 구조를 만들었습니다.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-q">왜 Caffeine + Redis 2계층 캐시인가?</div>
+        <div class="decision-a">Redis만 쓰면 매 요청마다 네트워크를 타야 합니다. 인기 레시피처럼 자주 조회되는 데이터는 <strong>Caffeine으로 인메모리에서 즉시 반환</strong>하고, 거기 없을 때만 Redis를 조회합니다. 응답시간이 눈에 띄게 줄었습니다.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-q">왜 Multi-AI 전략인가?</div>
+        <div class="decision-a">Grok(비용 효율), Gemini(멀티모달), Vertex AI(이미지)를 <strong>역할별로 분리</strong>하고 5개 모델을 비교·선정했습니다. 단일 모델에 의존하면 장애나 비용 급등 시 서비스가 멈추는 리스크가 있습니다. Multi-AI 구조로 모델 교체나 A/B 테스트가 유연해졌습니다.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-q">왜 MDC 컨텍스트 전파인가?</div>
+        <div class="decision-a">비동기 스레드에서 로그 추적이 끊기는 문제가 있었습니다. <strong>TaskDecorator</strong>로 부모 스레드의 MDC 컨텍스트를 자식 스레드에 복사하여 traceId가 비동기 흐름에서도 끊기지 않도록 했습니다. 장애 발생 시 요청 단위 로그 추적이 가능해졌습니다.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-q">왜 yt-dlp 기반 YouTube 파이프라인인가?</div>
+        <div class="decision-a">YouTube 공식 API는 자막을 가져오는 데 제약이 있습니다. <strong>yt-dlp</strong>로 자막·설명·댓글을 통합 추출하고, User-Agent 회전 + 쿠키 풀로 차단을 우회합니다. 토큰 사용량을 40% 절감하는 컨텍스트 상한 제어와 다단계 AI 파이프라인을 조합해 레시피 추출 정확도를 높였습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- TROUBLESHOOTING -->
+<section id="troubleshooting">
+  <div class="reveal">
+    <p class="section-label">Troubleshooting</p>
+    <h2 class="section-title">장애 대응 & 문제 해결</h2>
+  </div>
+  <div class="trouble-list reveal">
+
+    <div class="trouble-card">
+      <div class="trouble-icon red">🔥</div>
+      <div>
+        <div class="trouble-title">OOM으로 컨테이너 강제 재시작</div>
+        <div class="trouble-body">
+          <div class="trouble-row">
+            <span class="trouble-key">상황</span>
+            <span class="trouble-val">추천 API에서 OutOfMemoryError 발생, ECS 컨테이너 강제 재시작으로 서비스 수 분 중단</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">원인</span>
+            <span class="trouble-val">로그만으로 원인 특정 불가 → <strong>힙 덤프 분석</strong> → 추천 로직에서 N개 레시피 × M개 재료의 카르테시안 곱이 수십만 개 객체를 메모리에 적재. 원인 파악까지 이틀 소요.</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">해결</span>
+            <span class="trouble-val">후보 50개 사전 제한 + 4단계 스코어링(요리 궁합 → 태그 → 재료 → 평점)으로 정확도를 유지하며 메모리 안정화. 이후 Grafana 모니터링으로 재발 추적.</span>
+          </div>
+          <span class="trouble-result">✓ OOM 재발 0건 · 힙 사용량 60~70% 안정</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trouble-card">
+      <div class="trouble-icon yellow">⚡</div>
+      <div>
+        <div class="trouble-title">rollback-only 마킹으로 검색 API 전체 마비</div>
+        <div class="trouble-body">
+          <div class="trouble-row">
+            <span class="trouble-key">상황</span>
+            <span class="trouble-val">검색 API에서 원인 불명의 500 에러 간헐적 발생</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">원인</span>
+            <span class="trouble-val">OpenSearch 인덱싱 실패가 상위 @Transactional의 트랜잭션을 <strong>rollback-only로 마킹</strong> → 커밋 시 전체 롤백. 트랜잭션 로그 추적으로 진단.</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">해결</span>
+            <span class="trouble-val">인덱싱 로직을 <strong>REQUIRES_NEW</strong>로 트랜잭션 분리. 실패 건은 별도 테이블에 기록 후 매일 03:00 배치로 자동 복구.</span>
+          </div>
+          <span class="trouble-result">✓ 검색 단일 장애점 제거 · 인덱싱 실패가 DB에 영향 없는 독립 구조</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trouble-card">
+      <div class="trouble-icon blue">🎬</div>
+      <div>
+        <div class="trouble-title">YouTube 자막 추출 서버 IP 차단</div>
+        <div class="trouble-body">
+          <div class="trouble-row">
+            <span class="trouble-key">상황</span>
+            <span class="trouble-val">yt-dlp 기반 자막 추출이 서버 IP 차단으로 동작 불가</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">해결</span>
+            <span class="trouble-val"><strong>2단계 폴백</strong>: 1차(No Cookie + Proxy) → 2차(With Cookie + No Proxy). User-Agent 회전 + 쿠키 풀 적용. 자막·설명·댓글에 컨텍스트 상한을 설정해 LLM 토큰 약 <strong>40% 절감</strong>. 동일 URL 중복 추출 방지를 위해 ConcurrentHashMap 기반 idempotent 처리 구현.</span>
+          </div>
+          <span class="trouble-result">✓ 차단 환경에서도 안정적 추출 · 토큰 비용 40% 절감</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trouble-card">
+      <div class="trouble-icon purple">🔐</div>
+      <div>
+        <div class="trouble-title">소셜 로그인 Race Condition으로 중복 가입</div>
+        <div class="trouble-body">
+          <div class="trouble-row">
+            <span class="trouble-key">상황</span>
+            <span class="trouble-val">동일 사용자가 빠르게 재요청 시 DB에 중복 계정 생성</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">원인</span>
+            <span class="trouble-val">OAuth2 콜백 처리 중 조회→삽입 사이에 race condition 발생</span>
+          </div>
+          <div class="trouble-row">
+            <span class="trouble-key">해결</span>
+            <span class="trouble-val">provider + oauthId 복합 유니크 제약 추가 + <strong>중복 가입 예외를 기존 계정 반환으로 처리</strong>하는 안전한 fallback 설계.</span>
+          </div>
+          <span class="trouble-result">✓ 중복 가입 0건 · 사용자 경험 유지</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEFORE/AFTER -->
+  <div class="reveal" style="margin-top:48px;">
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;color:#aaa;">성능 개선 Before / After</h3>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <table class="ba-table">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>Before</th>
+            <th>After</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>추천 API 메모리</td>
+            <td class="before">OOM 발생 (컨테이너 재시작)</td>
+            <td class="after">힙 60~70% 안정 · 재발 0건</td>
+          </tr>
+          <tr>
+            <td>LLM 토큰 비용</td>
+            <td class="before">전처리 없음</td>
+            <td class="after">컨텍스트 상한 제어로 약 40% 절감</td>
+          </tr>
+          <tr>
+            <td>검색 장애</td>
+            <td class="before">단일 장애점 (OpenSearch 다운 시 서비스 중단)</td>
+            <td class="after">QueryDSL 자동 폴백 · 중단 시간 0</td>
+          </tr>
+          <tr>
+            <td>인덱싱 실패</td>
+            <td class="before">데이터 유실</td>
+            <td class="after" style="border-bottom:none;">배치 자동 복구로 복구율 100%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="reveal">
+    <p class="section-label">Education & Awards</p>
+    <h2 class="section-title">학력 & 수상</h2>
+  </div>
+  <div class="edu-list reveal">
+    <div class="edu-card">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <div class="edu-name">세종대학교 소프트웨어학과</div>
+        <div class="edu-desc">2021 ~ 현재</div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">🏆</div>
+      <div>
+        <div class="edu-name">캡스톤디자인 SMART TOURNAMENT 장려상</div>
+        <div class="edu-desc">사물인터넷 혁신융합대학사업단 · 백엔드 설계·개발</div>
+      </div>
+      <span class="edu-badge">장려상</span>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">🥇</div>
+      <div>
+        <div class="edu-name">세종대학교 해커톤 4위</div>
+        <div class="edu-desc">2025.05 · 백엔드 개발</div>
+      </div>
+      <span class="edu-badge">4위</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">© 2025 장민서. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="https://github.com/minseo0943" target="_blank">GitHub</a>
+    <a href="https://recipio.kr" target="_blank">Recipio</a>
+    <a href="mailto:minseo0943@email.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav active link
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? '#e8e8e8' : '';
+    });
+  });
+</script>
+</body>
+</html>

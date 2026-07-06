@@ -1,1179 +1,424 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>장민서 | Backend Developer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>장민서 — Backend Engineer</title>
+<style>
+  :root{
+    --bg:#F7FAF9; --ink:#15211E; --sub:#566662; --accent:#0E6E68; --accent-deep:#0A514C;
+    --card:#FFFFFF; --line:#DCE5E2; --chip:#E7F1EF; --warn:#8A5A00; --warn-bg:#F6EEDD;
+    --mono:"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font:15px/1.78 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-    :root {
-      --bg: #0d0d0d;
-      --bg2: #141414;
-      --bg3: #1a1a1a;
-      --border: #222;
-      --text: #e8e8e8;
-      --muted: #666;
-      --accent: #4f8ef7;
-      --accent2: #7c3aed;
-      --green: #22c55e;
-      --red: #ef4444;
-      --yellow: #f59e0b;
-    }
+  nav{position:sticky;top:0;background:rgba(247,250,249,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);z-index:9}
+  nav .in{max-width:880px;margin:0 auto;padding:11px 28px;display:flex;gap:20px;align-items:center;
+    font-size:12.5px}
+  nav .who{font-weight:800;letter-spacing:-.01em;margin-right:auto}
+  nav a{color:var(--sub)} nav a:hover{color:var(--accent);text-decoration:none}
 
-    html { scroll-behavior: smooth; }
+  main{max-width:880px;margin:0 auto;padding:64px 28px 100px}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-    }
+  /* hero */
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:14px}
+  h1{font-size:42px;line-height:1.24;font-weight:900;letter-spacing:-.03em;text-wrap:balance}
+  h1 b{color:var(--accent)}
+  .lede{margin-top:20px;max-width:660px;font-size:16.5px}
+  .idline{margin-top:18px;font-size:13px;color:var(--sub)}
+  .idline b{color:var(--ink)}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 64px;
-      background: rgba(13,13,13,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 20px}
+  .stat .v{font-size:25px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stat .v small{font-size:13px;font-weight:500;color:var(--sub)}
+  .stat .k{margin-top:4px;font-size:13px}
+  .stat .m{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--accent);
+    background:var(--chip);display:inline-block;padding:2px 8px;border-radius:3px}
 
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 120px 48px 80px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      align-items: center;
-      gap: 60px;
-      width: 100%;
-    }
-    .hero-content { max-width: 680px; }
-    .hero-profile {
-      display: flex;
-      justify-content: center;
-    }
-    .hero-profile img {
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center top;
-      border: 3px solid var(--border);
-      box-shadow: 0 0 0 6px rgba(79,142,247,0.1);
-    }
+  .pending{display:inline-block;font-family:var(--mono);font-size:10.5px;color:var(--warn);
+    background:var(--warn-bg);padding:2px 8px;border-radius:3px;vertical-align:2px}
 
-    /* ── METRICS ── */
-    .metrics-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 32px 0 48px;
-      align-items: stretch;
-    }
-    .metric-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .metric-card-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 16px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .metric-card-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-    .metric-card-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.01em;
-    }
-    .metric-card-sub {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-left: auto;
-    }
-        .metric-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: contain;
-      background: var(--bg3);
-      display: block;
-    }
+  /* section frame */
+  section{margin-top:96px;scroll-margin-top:64px}
+  .sec-eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:12px}
+  .sec-eyebrow::before{content:"■ ";font-size:9px;vertical-align:2px}
+  h2{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1.35;text-wrap:balance;
+    margin-bottom:20px;max-width:640px}
+  .prose{max-width:660px}
+  .prose p+p{margin-top:15px}
+  h3{font-size:16.5px;font-weight:700;margin:30px 0 8px}
+  .tag{font-family:var(--mono);font-size:12px;color:var(--sub);font-weight:400}
+  .hash{font-family:var(--mono);font-size:12px;background:var(--chip);color:var(--accent);
+    padding:1px 7px;border-radius:3px}
 
-    /* ── ARCH IMAGE ── */
-    .arch-img-wrap {
-      margin: 48px 0 56px;
-    }
-    .arch-img-wrap h3 {
-      font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em;
-      margin-bottom: 20px; color: #aaa;
-    }
-    .arch-img-wrap img {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(79,142,247,0.1);
-      border: 1px solid rgba(79,142,247,0.25);
-      border-radius: 100px;
-      padding: 6px 14px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--accent);
-      margin-bottom: 28px;
-    }
-    .hero-badge::before {
-      content: '';
-      width: 7px; height: 7px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
-    }
-    .hero-title {
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-    .hero-title .name { color: var(--accent); }
-    .hero-desc {
-      font-size: 1.1rem;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 40px;
-      max-width: 540px;
-    }
-    .hero-desc strong { color: var(--text); }
-    .hero-links { display: flex; gap: 16px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-      border: none;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-primary:hover { background: #3d7cf5; transform: translateY(-1px); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: #444; background: var(--bg3); transform: translateY(-1px); }
+  /* role cards */
+  .role{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+  .role .col{background:var(--card);border:1px solid var(--line);border-radius:6px;
+    padding:16px 18px;font-size:13.5px;line-height:1.8}
+  .role h4{font-size:11.5px;letter-spacing:.1em;margin-bottom:8px;font-family:var(--mono)}
+  .role .mine{border-top:3px solid var(--accent)} .role .mine h4{color:var(--accent)}
+  .role .theirs h4,.role .both h4{color:var(--sub)}
+  .role-note{margin-top:14px;font-size:13px;color:var(--sub);max-width:660px}
 
-    .hero-stats {
-      display: flex;
-      gap: 40px;
-      margin-top: 60px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border);
-    }
-    .stat-item { }
-    .stat-num {
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--text);
-      line-height: 1;
-    }
-    .stat-num span { color: var(--accent); }
-    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+  /* stack chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 30px}
+  .chips span{font-family:var(--mono);font-size:12px;background:var(--card);
+    border:1px solid var(--line);padding:3px 10px;border-radius:4px;color:var(--sub)}
 
-    /* ── SECTION BASE ── */
-    section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 48px;
-      line-height: 1.2;
-    }
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+  /* timeline rail */
+  .tl{border-left:2px solid var(--line);margin:26px 0 0 8px;padding-left:26px;
+    display:flex;flex-direction:column;gap:30px}
+  .ev{position:relative;max-width:640px}
+  .ev::before{content:"";position:absolute;left:-33px;top:6px;width:12px;height:12px;
+    border-radius:50%;background:var(--card);border:3px solid var(--accent)}
+  .ev.miss::before{border-color:var(--warn)}
+  .ev.dim::before{border-color:var(--line)}
+  .ev .when{font-family:var(--mono);font-size:12px;color:var(--sub);margin-bottom:4px}
+  .ev h3{margin:0 0 6px}
+  .ev p{font-size:14.5px}
+  .ev .note{margin-top:10px;font-size:13.5px;color:var(--sub)}
+  .ev .note b{color:var(--warn)}
 
-    /* ── TECH STACK ── */
-    .tech-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
-    .tech-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
-      transition: border-color 0.2s;
-    }
-    .tech-card:hover { border-color: #333; }
-    .tech-card-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .tag.blue { border-color: rgba(79,142,247,0.3); color: var(--accent); background: rgba(79,142,247,0.08); }
-    .tag.purple { border-color: rgba(124,58,237,0.3); color: #a78bfa; background: rgba(124,58,237,0.08); }
-    .tag.green { border-color: rgba(34,197,94,0.3); color: var(--green); background: rgba(34,197,94,0.08); }
-    .tag.orange { border-color: rgba(245,158,11,0.3); color: var(--yellow); background: rgba(245,158,11,0.08); }
-    .tag.red { border-color: rgba(239,68,68,0.3); color: var(--red); background: rgba(239,68,68,0.08); }
+  /* lesson & tables */
+  .lesson{margin:24px 0;padding:16px 20px;background:var(--chip);border-left:3px solid var(--accent);
+    font-size:14.5px;max-width:640px}
+  table.plain{width:100%;max-width:660px;border-collapse:collapse;font-size:13.5px;margin:18px 0}
+  table.plain th{text-align:left;font-size:11.5px;font-family:var(--mono);letter-spacing:.06em;
+    color:var(--sub);padding:8px 12px 8px 0;border-bottom:1px solid var(--ink);font-weight:600}
+  table.plain td{padding:9px 12px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  table.plain td:first-child{white-space:nowrap;font-weight:600}
+  .twrap{overflow-x:auto}
 
-    /* ── PROJECT ── */
-    .project-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 64px;
-      align-items: start;
-    }
-    .project-meta { }
-    .project-name {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 8px;
-    }
-    .project-subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.7; }
-    .project-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .project-info-item { }
-    .project-info-key { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
-    .project-info-val { font-size: 0.9rem; font-weight: 500; }
-    .project-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .stat-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-    }
-    .stat-card-num {
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--accent);
-    }
-    .stat-card-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+  /* defect list */
+  ul.defects{max-width:660px;margin:16px 0;padding-left:0;list-style:none;display:flex;
+    flex-direction:column;gap:12px}
+  ul.defects li{background:var(--card);border:1px solid var(--line);border-radius:6px;
+    padding:13px 16px;font-size:14px}
+  ul.defects b{color:var(--accent-deep)}
 
-    /* ── DECISIONS ── */
-    .decisions-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 64px;
-    }
-    .decision-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: border-color 0.2s;
-    }
-    .decision-card:hover { border-color: rgba(79,142,247,0.3); }
-    .decision-q {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-    .decision-a { font-size: 0.875rem; color: #aaa; line-height: 1.7; }
-    .decision-a strong { color: var(--text); }
+  /* provider strip */
+  .strip{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:22px 0;
+    font-family:var(--mono);font-size:12.5px}
+  .strip .p{background:var(--card);border:1px solid var(--line);padding:4px 12px;border-radius:4px}
+  .strip .p.now{border-color:var(--accent);color:var(--accent);font-weight:700}
+  .strip .arr{color:var(--sub)}
 
-    /* ── TROUBLESHOOTING ── */
-    .trouble-list { display: flex; flex-direction: column; gap: 20px; }
-    .trouble-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px 32px;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 24px;
-      align-items: start;
-      transition: border-color 0.2s;
-    }
-    .trouble-card:hover { border-color: #333; }
-    .trouble-icon {
-      width: 42px; height: 42px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-    .trouble-icon.red { background: rgba(239,68,68,0.12); }
-    .trouble-icon.yellow { background: rgba(245,158,11,0.12); }
-    .trouble-icon.blue { background: rgba(79,142,247,0.12); }
-    .trouble-icon.purple { background: rgba(124,58,237,0.12); }
-    .trouble-title { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
-    .trouble-body { display: flex; flex-direction: column; gap: 8px; }
-    .trouble-row { display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: baseline; }
-    .trouble-key { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding-top: 2px; }
-    .trouble-val { font-size: 0.875rem; color: #bbb; line-height: 1.65; }
-    .trouble-val strong { color: var(--text); }
-    .trouble-result {
-      margin-top: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(34,197,94,0.1);
-      border: 1px solid rgba(34,197,94,0.2);
-      border-radius: 6px;
-      padding: 5px 12px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--green);
-    }
+  /* limits */
+  ul.limits{max-width:660px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  ul.limits li{padding-left:18px;position:relative;font-size:14.5px}
+  ul.limits li::before{content:"—";position:absolute;left:0;color:var(--warn)}
 
-    /* ── CODE BLOCK ── */
-    .code-block { margin-top: 14px; }
-    .code-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .code-cols.single { grid-template-columns: 1fr; }
-    .code-col-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .code-col-label.before { color: var(--red); }
-    .code-col-label.after { color: var(--green); }
-    pre.code-pre {
-      margin: 0;
-      padding: 12px 14px;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      line-height: 1.65;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    pre.code-pre.before {
-      background: rgba(239,68,68,0.07);
-      border: 1px solid rgba(239,68,68,0.18);
-      color: #f87171;
-    }
-    pre.code-pre.after {
-      background: rgba(34,197,94,0.07);
-      border: 1px solid rgba(34,197,94,0.18);
-      color: #86efac;
-    }
-    @media (max-width: 768px) { .code-cols { grid-template-columns: 1fr; } }
+  .diagram-todo{max-width:660px;margin:24px 0;padding:36px 20px;border:1.5px dashed var(--line);
+    border-radius:6px;text-align:center;color:var(--sub);font-size:13px;font-family:var(--mono)}
 
-    /* ── BEFORE AFTER ── */
-    .ba-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 16px;
-      font-size: 0.875rem;
-    }
-    .ba-table th {
-      text-align: left;
-      padding: 10px 16px;
-      background: var(--bg3);
-      color: var(--muted);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
-    }
-    .ba-table th:first-child { border-radius: 8px 0 0 0; }
-    .ba-table th:last-child { border-radius: 0 8px 0 0; }
-    .ba-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
-    .ba-table td:first-child { font-weight: 500; }
-    .ba-table .before { color: var(--red); }
-    .ba-table .after { color: var(--green); font-weight: 600; }
+  footer{margin-top:110px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:12px;color:var(--sub);display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:8px}
 
-    /* ── EDUCATION ── */
-    .edu-list { display: flex; flex-direction: column; gap: 16px; }
-    .edu-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px 28px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .edu-icon {
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      background: rgba(79,142,247,0.12);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-    .edu-name { font-weight: 700; font-size: 0.95rem; }
-    .edu-desc { font-size: 0.83rem; color: var(--muted); margin-top: 2px; }
-    .edu-badge {
-      margin-left: auto;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(245,158,11,0.1);
-      border: 1px solid rgba(245,158,11,0.25);
-      color: var(--yellow);
-      white-space: nowrap;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 48px;
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .footer-left { font-size: 0.85rem; color: var(--muted); }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-links a {
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--text); }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    @media print {
-      .reveal { opacity: 1 !important; transform: none !important; }
-      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
-      /* 네비게이션 숨기기 */
-      nav { display: none !important; }
-
-      /* 히어로 섹션 간소화 */
-      #hero { min-height: auto !important; padding: 40px 48px 20px !important; }
-      #hero section { padding: 40px 48px 20px !important; }
-      .hero-inner { gap: 30px !important; }
-      .hero-profile img { width: 160px !important; height: 160px !important; }
-      .hero-stats { margin-top: 30px !important; padding-top: 20px !important; }
-      .hero-desc { margin-bottom: 20px !important; }
-      .hero-links { display: none !important; }
-
-      /* 섹션 간격 줄이기 */
-      section { padding: 40px 48px !important; }
-      .section-title { margin-bottom: 24px !important; }
-      hr.divider { margin: 0 auto !important; }
-
-      /* 카드 잘림 방지 */
-      .tech-card, .decision-card, .trouble-card, .edu-card, .stat-card, .metric-card {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      .trouble-list > div { break-inside: avoid !important; page-break-inside: avoid !important; }
-      .arch-img-wrap { break-inside: avoid !important; page-break-inside: avoid !important; }
-
-      /* 서비스 화면 잘림 방지 */
-      .reveal[style*="margin-bottom:56px"] { break-inside: avoid !important; page-break-inside: avoid !important; }
-
-      /* 그리드 간격 줄이기 */
-      .decisions-grid { gap: 12px !important; margin-bottom: 32px !important; }
-      .tech-grid { gap: 12px !important; }
-      .project-header { margin-bottom: 32px !important; gap: 24px !important; }
-      .metrics-row { margin: 16px 0 24px !important; gap: 12px !important; }
-      .project-stats { gap: 12px !important; }
-      .arch-img-wrap { margin: 24px 0 32px !important; }
-
-      /* Before/After 테이블 잘림 방지 */
-      .ba-table { break-inside: avoid !important; }
-      .reveal[style*="margin-top:48px"] { break-inside: avoid !important; page-break-inside: avoid !important; }
-
-      /* 푸터 간소화 */
-      footer { padding: 24px 48px !important; }
-
-      /* 섹션 앞에서 페이지 넘김 */
-      #troubleshooting { break-before: page !important; }
-      #education { break-before: avoid !important; }
-    }
-
-    /* ── ARCHITECTURE DIAGRAM ── */
-    .arch-wrap { margin: 56px 0; }
-    .arch-heading {
-      font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em;
-      margin-bottom: 24px; color: #aaa;
-    }
-    .arch-diagram {
-      display: grid;
-      grid-template-columns: 1fr 52px 1.15fr 52px 1.25fr;
-      align-items: center;
-      gap: 0;
-    }
-    .arch-col { display: flex; flex-direction: column; }
-    .arch-group {
-      border-radius: 12px;
-      padding: 16px;
-      border-width: 1px;
-      border-style: solid;
-    }
-    .arch-group[data-c="yellow"] { border-color: rgba(245,158,11,.28); background: rgba(245,158,11,.04); }
-    .arch-group[data-c="yellow"] .arch-glbl { color: #f59e0b; }
-    .arch-group[data-c="blue"]   { border-color: rgba(79,142,247,.28); background: rgba(79,142,247,.04); }
-    .arch-group[data-c="blue"]   .arch-glbl { color: #4f8ef7; }
-    .arch-group[data-c="purple"] { border-color: rgba(124,58,237,.32); background: rgba(124,58,237,.04); }
-    .arch-group[data-c="purple"] .arch-glbl { color: #a78bfa; }
-    .arch-group[data-c="green"]  { border-color: rgba(34,197,94,.28); background: rgba(34,197,94,.04); }
-    .arch-group[data-c="green"]  .arch-glbl { color: #22c55e; }
-    .arch-glbl {
-      font-size: 0.62rem; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; display: block; margin-bottom: 10px;
-    }
-    .arch-node {
-      display: flex; align-items: center; gap: 7px;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 7px; padding: 7px 11px;
-      font-size: 0.78rem; font-weight: 500; margin-bottom: 5px;
-      white-space: nowrap;
-    }
-    .arch-node:last-child { margin-bottom: 0; }
-    .arch-node-core {
-      font-size: 0.82rem; font-weight: 700; padding: 9px 13px;
-      border-color: rgba(79,142,247,.35); color: var(--accent); margin-bottom: 9px;
-    }
-    .arch-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-    .arch-node-sm { font-size: 0.7rem; padding: 5px 8px; margin-bottom: 0; justify-content: center; }
-    .arch-role { font-size: 0.66rem; color: var(--muted); margin-left: auto; padding-left: 6px; }
-    .arch-connector {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 5px;
-    }
-    .arch-conn-track {
-      width: 100%; height: 2px; position: relative;
-      background: linear-gradient(90deg, var(--border) 0%, #444 50%, var(--border) 100%);
-    }
-    .arch-conn-track::after {
-      content: ''; position: absolute; right: -1px; top: -4px;
-      border-top: 5px solid transparent; border-bottom: 5px solid transparent;
-      border-left: 7px solid #444;
-    }
-    .arch-conn-lbl {
-      font-size: 0.6rem; font-weight: 600; letter-spacing: .04em;
-      color: var(--muted); background: var(--bg2);
-      border: 1px solid var(--border); border-radius: 4px;
-      padding: 2px 6px; white-space: nowrap;
-    }
-    .arch-right-stack { display: flex; flex-direction: column; gap: 10px; }
-
-    @media (max-width: 768px) {
-      .arch-diagram {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      .arch-connector { display: none; }
-      .arch-node { white-space: normal; }
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 0 24px; }
-      section { padding: 80px 24px; }
-      #hero { padding: 100px 24px 60px; }
-      .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-      .hero-profile { order: -1; }
-      .hero-profile img { width: 160px; height: 160px; }
-      .project-header { grid-template-columns: 1fr; }
-      .decisions-grid { grid-template-columns: 1fr; }
-      .hero-stats { gap: 24px; }
-      .trouble-card { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 16px; text-align: center; }
-      .nav-links { display: none; }
-      .metrics-row { grid-template-columns: 1fr; gap: 12px; }
-    }
-  </style>
+  @media(max-width:720px){
+    h1{font-size:32px}
+    .stats,.role{grid-template-columns:1fr}
+    nav .links{display:none}
+  }
+  @media print{
+    nav{display:none} body{background:#fff}
+    section{margin-top:48px} .pending{display:none}
+  }
+</style>
 </head>
 <body>
+<nav><div class="in">
+  <span class="who">장민서</span>
+  <span class="links">
+    <a href="#timeline">타임라인</a> ·
+    <a href="#dd1">i18n 파이프라인</a> ·
+    <a href="#dd2">장애 연작</a> ·
+    <a href="#dd3">AI 비용</a> ·
+    <a href="#limits">한계</a>
+  </span>
+</div></nav>
+<main>
 
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#hero">ms<span>.</span>dev</a>
-  <ul class="nav-links">
-    <li><a href="#hero">About</a></li>
-    <li><a href="#stack">Stack</a></li>
-    <li><a href="#project">Project</a></li>
-    <li><a href="#troubleshooting">Troubleshooting</a></li>
-    <li><a href="#education">Education</a></li>
+<header>
+  <div class="eyebrow">Backend Engineer · Portfolio</div>
+  <h1>서비스 하나를 <b>2년</b> —<br>만들고, 운영하고, 복구했습니다.</h1>
+  <p class="lede">레시피 플랫폼 Recipio(해먹)를 3인 팀(백엔드 2 · 프론트 1)에서 백엔드 담당으로 만들고 운영해왔습니다.
+  트래픽이 생기면서 성능 문제와 장애를 겪었고, AI API 청구서도 줄여야 했습니다.
+  이 문서에는 그 과정에서 <strong>증거가 남아 있는 것만</strong> 담았습니다.</p>
+  <div class="idline"><b>장민서</b> · Backend Engineer · minseo0943@naver.com</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="v">MAU <span class="pending">확정 대기</span></div>
+      <div class="k">월간 활성 사용자</div>
+      <div class="m">PostHog</div>
+    </div>
+    <div class="stat">
+      <div class="v">1,902 → 456<small> ms</small></div>
+      <div class="k">검색 p95 · 검색엔진 제거 검증</div>
+      <div class="m">testcontainers + k6 · 10만 건 · c8</div>
+    </div>
+    <div class="stat">
+      <div class="v">20.7 → 2.3<small> 원/건</small></div>
+      <div class="k">AI 추출 비용 · 언어 기반 라우팅</div>
+      <div class="m">n=192 실측</div>
+    </div>
+  </div>
+
+  <div class="role">
+    <div class="col mine"><h4>주도</h4>AI 파이프라인(생성·유튜브 추출·챗봇) · 검색 엔진 구축과 다국어 검색 · 추천·성능 최적화 · 다국어(i18n) 파이프라인 · 모니터링(Prometheus/Grafana)</div>
+    <div class="col theirs"><h4>백엔드 팀원 주도</h4>인증(OAuth 4사 · JWT · 토큰 회전) · 초기 AWS/ECS 배포 파이프라인 · 냉장고·레시피북 도메인</div>
+    <div class="col both"><h4>공동</h4>레시피 코어 도메인 · 유튜브 추출(AI·동시성 설계=본인 / API 계층=팀원) · DB 마이그레이션 · 테스트</div>
+  </div>
+  <p class="role-note">백엔드 전체 1,704 커밋 중 1,150개(67%)가 제 커밋이며, 이 문서의 사례는 전부 커밋 단위로 제가 작성한 것인지 확인한 뒤 실었습니다.</p>
+</header>
+
+<section id="timeline">
+  <div class="sec-eyebrow">Service &amp; Timeline</div>
+  <h2>서비스와 2년의 타임라인</h2>
+  <div class="chips">
+    <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway ×93</span><span>Tests 2,500+</span>
+  </div>
+  <figure style="max-width:960px;margin:26px 0 8px">
+  <img src="architecture-v3.png"
+       alt="Recipio 백엔드 아키텍처 — iOS/Android·Web 클라이언트, OAuth 4사, CI/CD(GitHub Actions·ECR), AWS ECS(EC2) 위 Spring Boot(Resilience4j·WebSocket·JPA), MySQL·Redis·S3·Caffeine·Prometheus·Grafana, AI 서비스(DeepSeek·Upstage·Gemini)와 언어 라우팅, YouTube yt-dlp, 쿠팡 파트너스"
+       style="width:100%;height:auto;border:1px solid #DCE5E2;border-radius:10px;background:#fff;padding:10px 8px"
+       loading="lazy">
+  <figcaption style="font-size:12px;color:var(--sub);margin-top:8px">
+    운영 아키텍처 개요 — 검색·추천·AI·번역이 하나의 Spring Boot 서비스 안에서 플래그와 전용 스레드풀로 격리되어 동작합니다.
+  </figcaption>
+  </figure>
+  <div class="tl">
+    <div class="ev dim">
+      <div class="when">2025 상반기</div>
+      <h3>구축</h3>
+      <p>레시피 CRUD·댓글·태그·평점, OpenSearch 기반 검색 엔진, OpenAI 기반 AI 레시피 생성.</p>
+    </div>
+    <div class="ev dim">
+      <div class="when">2025 하반기</div>
+      <h3>성능 전쟁</h3>
+      <p>트래픽이 생기며 문제가 시작됐습니다. 추천 쿼리의 카르테시안 곱이 힙을 태우는 것을 잡았고(후보 상한 도입),
+      목록 조회의 N+1을 프로젝션으로 걷어냈습니다. AI 생성 모델을 Grok으로 전환하며 프롬프트 체계를 다시 세웠습니다.</p>
+    </div>
+    <div class="ev dim">
+      <div class="when">2026 상반기</div>
+      <h3>파이프라인과 운영</h3>
+      <p>유튜브 영상에서 레시피를 추출하는 파이프라인을 만들었습니다. 같은 영상에 동시 요청이 몰리면
+      추출은 한 번만 하는 합승(bus) 구조와 3단계 트랜잭션 경계를 설계하고, 동시성 통합 테스트로 고정했습니다.
+      이때 구축한 Prometheus/Grafana 모니터링이 이후 모든 진단의 출발점이 됐습니다.</p>
+    </div>
+    <div class="ev">
+      <div class="when">2026 여름</div>
+      <h3>장애와 확장</h3>
+      <p>검색 스택을 정리하고 서비스를 일본어·영어로 확장했습니다(<a href="#dd1">딥다이브 1</a>).
+      그 사이 닷새 간격으로 장애 두 건을 겪고 복구했습니다(<a href="#dd2">딥다이브 2</a>).</p>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:36px">
+    <h3>검색 스택의 수명주기 — 도입한 사람이 제거를 검증하다</h3>
+    <p>2025년 5월 OpenSearch를 도입해 검색을 만들었고, 하이브리드 재료 검색과 장애 시 QueryDSL 폴백까지 운영했습니다.
+    2026년, 프리티어 종료로 비용 부담이 커지자 팀은 제거를 결정했습니다. 제 역할은 <strong>"MySQL만으로 버틸 수 있는가"의 검증</strong>이었습니다.
+    10만 건·동시 8 조건에서 LIKE p95가 1,902ms, 튜닝한 MySQL 경로가 456ms로 기준 500ms를 통과해
+    제거 가능으로 판정했습니다. ko 메인 검색의 ngram FULLTEXT 전환 구현은 팀원의 작업이고, 저는 그 위에
+    다국어 검색 코퍼스와 장애 대응 경로를 만들었습니다. 검색엔진 재도입 판단 기준(형태소 분석·동의어 요구 발생 시)도
+    문서로 남겼습니다. <a href="https://github.com/minseo0943/portfolio/blob/main/adr/0006-mysql-querydsl-search-optimization.md">ADR-0006 ↗</a></p>
+  </div>
+</section>
+
+<section id="dd1">
+  <div class="sec-eyebrow">Deep Dive 01 · i18n Pipeline</div>
+  <h2>10만 건 번역을 감당하는 파이프라인 —<br>외부 큐 없이, 실패를 1급 시민으로</h2>
+  <div class="prose">
+    <p>2년 차, 서비스를 일본어·영어권으로 확장하기로 했습니다. 레시피 본문·재료명·단위·댓글·큐레이션까지,
+    대상은 레시피 번역 잡만 누적 10만 7천 건입니다(2026-07 운영 스냅숏 106,938건).
+    요청 시점 번역으로는 감당할 수 없는 규모였습니다.
+    이 파이프라인은 커밋 기준 제가 단독 구현했습니다(i18n 경로 81:3).</p>
+    <p>번역을 API 호출이 아니라 <strong>비동기 잡·상태 기계·복구 수단</strong>의 문제로 정의했습니다.
+    운영해 보면 AI 번역은 실패하고, 부분적으로 실패하고, 같은 방식으로 다시 실패합니다.
+    그래서 번역 함수보다 실패를 관리하는 시스템이 먼저 필요했습니다.</p>
+
+    <h3>왜 SQS가 아니라 MySQL 잡큐인가</h3>
+    <p>잡 상태는 운영 중에 조회하고 리셋하고 우선순위도 바꿔야 하는 <strong>도메인 데이터</strong>였습니다.
+    외부 큐를 쓰면 잡 상태와 도메인 데이터의 트랜잭션 정합을 따로 맞춰야 하고, 단일 RDS·2인 팀 환경에서
+    인프라 추가 비용도 정당화되지 않았습니다. UNIQUE(recipe, locale) 제약으로 enqueue 멱등성을 DB가 보장합니다.
+    잡큐 패턴 자체는 사내 기존 코드에서 가져왔습니다. 제가 한 일은 이 패턴에 숨어 있던 결함 세 개를
+    실측으로 찾아 메운 것입니다:</p>
+  </div>
+  <ul class="defects">
+    <li><b>경쟁 패배 ≠ 큐 비움</b> — 두 워커가 같은 잡을 두고 경쟁해 진 쪽이 "큐가 비었다"고 판단하고 멈추는 버그.
+      원자적 선점(UPDATE 한 문장의 CAS)과 재스캔 루프로 분리</li>
+    <li><b>afterCommit enqueue 유실</b> — 커밋 이후 훅에서 enqueue하면 이미 끝난 트랜잭션에 참여해
+      INSERT가 사라지는 Spring 트랜잭션 동기화 함정. 신규 트랜잭션으로 분리</li>
+    <li><b>poison job 무한 재선점</b> — 워커를 죽이는 잡은 재시도 카운트가 영원히 오르지 않아 무한 재선점됨.
+      선점 횟수를 별도로 세어 AI 호출 전에 격리. "최대 선점 &gt; 최대 재시도" 불변식을 주석으로 문서화</li>
   </ul>
-</nav>
-
-<!-- HERO -->
-<div id="hero" style="padding-top:0; margin:0; max-width:100%">
-  <section style="padding-top:0; margin:0 auto; max-width:1100px; padding: 140px 48px 80px;">
-    <div class="hero-inner reveal">
-    <div class="hero-content">
-      <div class="hero-badge">신입 백엔드 개발자 · 구직 중</div>
-      <h1 class="hero-title">안녕하세요,<br /><span class="name">장민서</span>입니다.</h1>
-      <p class="hero-desc">
-        앱 출시 4개월 만에 <strong>MAU 30,000+</strong>을 달성한 AI 레시피 플랫폼(Backend 2인·Frontend 1인)에서 백엔드 아키텍처·AI 파이프라인·인프라를 담당한 개발자입니다.<br /><br />
-        실서비스 장애를 GC 로그·힙 덤프·트랜잭션 전파 로그까지 직접 들여다보며 근본 원인을 찾고, 구조를 바꿔 재발을 막습니다. 문제가 생기면 공식 문서로 원리를 이해한 뒤 적용하고, 해결 방식은 <strong>팀의 아키텍처 원칙으로 정착</strong>시킵니다.
-      </p>
-      <div class="hero-links">
-        <a class="btn btn-primary" href="https://recipio.kr" target="_blank">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          서비스 바로가기
-        </a>
-        <a class="btn btn-ghost" href="https://github.com/Haemeok/Haemeok-backend" target="_blank">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          GitHub
-        </a>
-        <a class="btn btn-ghost" href="mailto:minseo09433@gmail.com">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          Contact
-        </a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <div class="stat-num">15,000<span>+</span></div>
-          <div class="stat-label">누적 가입자</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">2,600</div>
-          <div class="stat-label">DAU 피크</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">30,000<span>+</span></div>
-          <div class="stat-label">MAU (앱 출시 4개월)</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-profile">
-      <img src="profile.png" alt="장민서 프로필 사진" />
-    </div>
-    </div>
-  </section>
-</div>
-
-<hr class="divider" />
-
-<!-- TECH STACK -->
-<section id="stack">
-  <div class="reveal">
-    <p class="section-label">Tech Stack</p>
-    <h2 class="section-title">기술 스택</h2>
+  <div class="prose">
+    <p style="margin-top:14px">이 설계가 실전에서 작동한 흔적이 잡 테이블에 남아 있습니다.
+    누적 106,938건 중 99.6%가 한 번의 선점으로 끝났고, 재선점 2회 이상은 479건,
+    최대 4회 1건으로 격리 임계 안입니다. 잡당 평균 처리는 4.4~6.6초입니다.</p>
+    <h3>per-step 폴백 — 실패 패턴에 맞춘 재시도</h3>
+    <p>통짜 번역이 "조리 스텝 개수 불일치"로 실패하는 패턴이 반복됐습니다. 그래서 마지막 시도에서는 스텝을
+    1건씩 번역하는 폴백으로 전환하게 했습니다. 호출 하나가 스텝 하나만 처리하니 개수 불일치가 구조적으로
+    불가능해집니다. kill switch와 전용 카운터도 함께 심었습니다. 운영 스냅숏이 결과를 보여줍니다.
+    전체 잡 중 FAILED는 25건(0.02%)이고, 실패 목록에 스텝 개수 불일치 유형은 한 건도 없습니다.
+    남은 실패는 대부분 번역 출력에 원문 한글이 남으면 차단하는 언어 순수성 게이트가 의도적으로 잡은 것이고,
+    나머지는 일시적 503입니다. per-step 번역은 스텝 사이 문맥을
+    잃지만, 폴백까지 오는 레시피는 애초에 원본부터 조각나 있어서 문맥 손실을 감수하고라도 404 대신
+    서빙하는 쪽이 낫다고 판단했습니다.</p>
+    <h3>제품 정책과의 결합 — strict 노출 게이트</h3>
+    <p>미번역 콘텐츠는 노출하지 않는 정책(미번역 상세=404)을 선택했습니다. 반쪽 번역 페이지가 SEO에도
+    사용자 신뢰에도 더 해롭다고 봤기 때문입니다. 이 정책이 성립하려면 "어떤 레시피가 어떤 언어로 노출
+    가능한가"의 명단이 항상 정확해야 합니다. 그래서 번역 상태의 진실로부터 명단을 멱등 재계산하는 서비스를
+    저장 트랜잭션에 참여시켰습니다. 다만 전면 404는 아니고, 단위나 조리도구 같은 부속 필드는 원문으로 낮춰
+    보여줍니다. 단위 하나 때문에 레시피 전체를 막을 이유는 없으니까요.</p>
   </div>
-  <div class="tech-grid reveal">
-    <div class="tech-card">
-      <div class="tech-card-label">Backend</div>
-      <div class="tech-tags">
-        <span class="tag blue">Java 17</span>
-        <span class="tag blue">Spring Boot 3.4</span>
-        <span class="tag">Spring Security</span>
-        <span class="tag">Spring Data JPA</span>
-        <span class="tag">QueryDSL</span>
-        <span class="tag">WebSocket · STOMP</span>
-      </div>
+  <div class="lesson">한계 — 큐 깊이(대기 잡 수)를 상시 관측하는 지표가 없어 "조용한 정지"를 대시보드가 못 잡습니다.
+  같은 잡큐 패턴이 4개 도메인에 복사돼 있어 수정 전파가 느립니다. 둘 다 인지하고 있는 다음 과제입니다.</div>
+</section>
+
+<section id="dd2">
+  <div class="sec-eyebrow">Deep Dive 02 · Incidents</div>
+  <h2>닷새 간격의 장애 두 건 —<br>같은 증상, 다른 원인</h2>
+  <p class="prose" style="font-size:13px;color:var(--sub)">사고 2026-06-24 · 06-29. 본 회고는 2026-07 재구성이며,
+  근거는 당시 커밋과 CloudWatch 캡처입니다.
+  <a href="https://github.com/minseo0943/portfolio/tree/main/incidents">전체 회고 ↗</a></p>
+
+  <div class="tl" style="margin-top:30px">
+    <div class="ev dim">
+      <div class="when">2025-12 → 2026-03 · 프리퀄</div>
+      <h3>1년의 성능 이력</h3>
+      <p>추천 쿼리 카르테시안 곱으로 힙이 터지는 것을 수습했고, 서버 응답 불능을 겪으며
+      커넥션 풀을 10에서 30으로 늘렸습니다. 이때 늘린 풀 30이 아래 두 장애의 배경입니다.</p>
     </div>
-    <div class="tech-card">
-      <div class="tech-card-label">Search & Cache</div>
-      <div class="tech-tags">
-        <span class="tag orange">OpenSearch 2.17</span>
-        <span class="tag orange">Nori 형태소 분석기</span>
-        <span class="tag red">Redis Cluster</span>
-        <span class="tag">Caffeine Cache</span>
-      </div>
+    <div class="ev">
+      <div class="when">2026-06-24 <span class="hash">a560b9c1</span></div>
+      <h3>1막 — 커넥션 풀 고갈, 설정 한 줄로 종결</h3>
+      <p>번역 코퍼스가 약 8.7만 행까지 자라자 LIKE 풀스캔 검색이 커넥션을 초 단위로 점유했고,
+      풀 30개가 고갈되며 검색과 무관한 로그인·상세·사이트맵까지 연쇄로 5xx가 났습니다.
+      커넥션 풀은 서비스 전체가 나눠 쓰는 자원이라, 한 경로의 느린 쿼리가 곧 전체 장애가 됩니다.</p>
+      <p style="margin-top:10px">수습은 설정 한 줄이었습니다. <strong>13일 전, FULLTEXT 검색 경로를 플래그 off 상태로
+      미리 배포해뒀기 때문입니다</strong>(dark deploy). 플래그를 켜는 것으로 종결했고,
+      위험 경로에는 쿼리당 5초 타임아웃을 다음 날 추가했습니다.</p>
+      <div class="note">복기 — 만들어두고 왜 미리 안 켰는가. "측정 후 활성화" 원칙을 지키는 사이 데이터가
+      먼저 임계를 넘었습니다. <b>게이트 뒤에 둔 경로는 켜지는 조건(데이터 성장 트리거)까지 설계에 포함해야
+      한다</b>는 게 이때 얻은 교훈이고, 이후 플래그 운영의 기본값이 됐습니다.</div>
     </div>
-    <div class="tech-card">
-      <div class="tech-card-label">AI / Resilience</div>
-      <div class="tech-tags">
-        <span class="tag purple">Grok API (xAI)</span>
-        <span class="tag purple">Gemini (Google)</span>
-        <span class="tag purple">Vertex AI Imagen</span>
-        <span class="tag red">Resilience4j</span>
-      </div>
+    <div class="ev miss">
+      <div class="when">2026-06-29 <span class="hash">37d2f245</span></div>
+      <h3>2막 — 같은 증상이 돌아왔다, 이번엔 디스크</h3>
+      <p>닷새 뒤 전 구간이 느려졌고 COUNT 쿼리 하나가 30초를 넘겼습니다.
+      처음엔 직전 배포의 무거운 쿼리를 의심해 최적화했지만 효과가 없었습니다.
+      증상을 원인으로 착각한 겁니다.</p>
     </div>
-    <div class="tech-card">
-      <div class="tech-card-label">Infra & DevOps</div>
-      <div class="tech-tags">
-        <span class="tag orange">AWS ECS · ECR · S3</span>
-        <span class="tag">Docker</span>
-        <span class="tag">GitHub Actions</span>
-      </div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-card-label">Auth & Database</div>
-      <div class="tech-tags">
-        <span class="tag blue">OAuth2 (4사)</span>
-        <span class="tag">JWT</span>
-        <span class="tag">MySQL 8.0</span>
-        <span class="tag">HikariCP</span>
-      </div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-card-label">Monitoring & Async</div>
-      <div class="tech-tags">
-        <span class="tag green">Prometheus · Grafana</span>
-        <span class="tag">MDC 컨텍스트 전파</span>
-        <span class="tag">CompletableFuture</span>
-        <span class="tag">Spring @Async</span>
-      </div>
-    </div>
+  </div>
+
+  <div class="prose" style="margin-top:28px">
+    <p>다시 관찰하니 패턴이 보였습니다:</p>
+    <div class="twrap"><table class="plain">
+      <tr><th>관찰</th><th>해석</th></tr>
+      <tr><td>SELECT 1 정상</td><td>네트워크·커넥션 계층 정상</td></tr>
+      <tr><td>PK 단건 조회 정상</td><td>버퍼풀에 있는 페이지 접근 정상</td></tr>
+      <tr><td>스캔 쿼리만 일제히 지연</td><td><strong>디스크를 읽는 순간만 느리다</strong></td></tr>
+    </table></div>
+    <p>병목은 쿼리가 아니라 스토리지였습니다. CloudWatch에서 <strong>BurstBalance = 0</strong>을 확인했습니다.
+    gp2 20GiB 볼륨의 기준 성능은 100 IOPS인데, 데이터와 트래픽이 자라며 버스트 크레딧이 바닥난 것입니다.
+    캡처를 보면 크레딧은 사고 전날 이미 고갈됐고, 하루 가까이 스로틀 상태로 달리고 있었습니다.
+    쿼리 튜닝으로 풀 수 없는 문제라 스토리지를 gp3(기준 3,000 IOPS, 월 비용은 오히려 감소)로 무중단 전환해
+    종결했습니다. RAM 증설은 비용이 몇 배로 뛰는 데다 재시작이 필요했고, 리드 레플리카는 읽기를 나눌 뿐
+    IOPS 문제 자체를 풀지 못합니다. gp3 전환이 가장 정확한 처방이었습니다.
+    <a href="https://github.com/minseo0943/portfolio/blob/main/incidents/2026-06-29-rds-gp2-iops-exhaustion.md">회고 전문·캡처 ↗</a></p>
+  </div>
+  <div class="lesson">이 사고에서 진단법보다 아픈 교훈이 하나 있습니다. 사고 7주 전 벤치마크 문서에
+  "운영 gp2 스로틀 가능성"을 제 손으로 적어놓고도 알람을 걸지 않았습니다. 위험을 인지하는 것과 지표로
+  관리하는 것은 다른 일이었고, 그 간극을 잇는 일이 재발 방지 항목으로 남아 있습니다.</div>
+  <div class="prose">
+    <h3>3막 — 임계를 미리 재다 <span class="tag">용량 산정</span></h3>
+    <p>장애 수습에서 멈추지 않고 다음 임계를 미리 쟀습니다. 유튜브 추출 경로가 메모리를 얼마나 견디는지
+    보려고 운영과 동일한 1.5GiB 컨테이너를 재현해 부하를 걸었고, <strong>동시 20건에서 OOM kill(exit 137)</strong>이라는
+    임계를 얻었습니다. 결론은 "스레드풀을 늘리지 말 것". 이후 팀이 컨테이너 메모리를 3GiB로 늘려서 이 수치는
+    재측정이 필요해졌습니다. 측정 하니스는 재현 가능하게 남아 있어 다시 돌리면 됩니다.
+    <a href="https://github.com/minseo0943/portfolio/blob/main/performance/youtube-extraction-capacity.md">측정 문서 ↗</a></p>
   </div>
 </section>
 
-<hr class="divider" />
-
-<!-- PROJECT -->
-<section id="project">
-  <div class="reveal">
-    <p class="section-label">Project</p>
-    <h2 class="section-title">Recipio</h2>
+<section id="dd3">
+  <div class="sec-eyebrow">Deep Dive 03 · AI Cost Engineering</div>
+  <h2>1년, 5개 프로바이더 —<br>감을 실측으로 바꾼 마지막 전환</h2>
+  <div class="strip">
+    <span class="p">OpenAI <span class="tag">2025-06</span></span><span class="arr">→</span>
+    <span class="p">Claude <span class="tag">실험·복귀</span></span><span class="arr">→</span>
+    <span class="p">Grok <span class="tag">2025-10</span></span><span class="arr">→</span>
+    <span class="p now">DeepSeek + Gemini <span class="tag">언어 라우팅</span></span>
   </div>
-  <div class="project-header reveal">
-    <div class="project-meta">
-      <p class="project-subtitle">
-        AI가 레시피를 생성하고, 냉장고 속 재료 기반으로 추천하며,<br />
-        유튜브 영상에서 레시피를 자동 추출하는 실서비스 플랫폼.<br /><br />
-        백엔드 아키텍처·AI 파이프라인·인프라를 담당해 <strong style="color:var(--text)">앱 출시 4개월 만에 MAU 30,000+</strong>으로 성장시켰습니다.
-      </p>
-      <div class="project-info-grid">
-        <div class="project-info-item">
-          <div class="project-info-key">기간</div>
-          <div class="project-info-val">2025.03 ~ 현재</div>
-        </div>
-        <div class="project-info-item">
-          <div class="project-info-key">팀 구성</div>
-          <div class="project-info-val">Backend 2명 · Frontend 1명</div>
-        </div>
-        <div class="project-info-item">
-          <div class="project-info-key">내 역할</div>
-          <div class="project-info-val">AI · 검색 · 인증 · 인프라 (811 커밋)</div>
-        </div>
-        <div class="project-info-item">
-          <div class="project-info-key">서비스</div>
-          <div class="project-info-val"><a href="https://recipio.kr" target="_blank" style="color:var(--accent);text-decoration:none;">recipio.kr</a></div>
-        </div>
-      </div>
-    </div>
-    <div class="project-stats">
-      <div class="stat-card">
-        <div class="stat-card-num">30,000+</div>
-        <div class="stat-card-label">MAU (앱 출시 4개월)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-num">15,000+</div>
-        <div class="stat-card-label">누적 가입자</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-num">2,600</div>
-        <div class="stat-card-label">DAU 피크</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-num">127+</div>
-        <div class="stat-card-label">API 엔드포인트</div>
-      </div>
-    </div>
+  <div class="prose">
+    <p>2025년 6월 OpenAI로 AI 레시피 생성을 시작한 뒤 1년간 프로바이더를 네 번 갈아탔습니다.
+    전환마다 이유가 있었지만, 초기 전환은 솔직히 감에 가까웠습니다. 이 장은 그 감을 <strong>실측으로 바꾼</strong>
+    마지막 전환의 기록입니다.</p>
+    <p>유튜브 추출 1단계(자막→구조화)에 쓰던 Grok은 품질이 좋았지만 건당 약 20.7원이었습니다.
+    더 싼 모델로 바꾸려던 첫 시도(일괄 전환)는 품질 결함 5종을 만들어 롤백했습니다.
+    <strong>모델 전환은 평균 점수가 아니라 실패 패턴으로 평가해야 한다</strong>는 걸 이때 배웠습니다.</p>
+    <h3>실측, 그리고 라우팅</h3>
+    <p>표본 192건으로 Gemini·DeepSeek을 비교하고 Grok 운영 실측을 기준점으로 삼았습니다.
+    둘을 가른 것은 능력 하나였습니다. <strong>깨진 한국어 ASR 자막의 복원</strong>("실레기"→"시래기")에서
+    Gemini는 6건 중 6건을 살렸고, 비추론 모델은 0건이었습니다. 그런데 이 능력이 필요한 건 한국어 영상뿐입니다.
+    그래서 모델을 하나 고르는 대신 <strong>언어로 라우팅</strong>했습니다. 복원이 필요한 한국어는 Gemini(3~5원),
+    그 외 언어는 DeepSeek(2.3원)입니다. 배포는 기본값을 기존 Grok으로 둔 hidden deploy로 하고 설정 전환으로
+    활성화했습니다. 설계 기준 비용은 기존 대비 약 1/5 수준입니다(일 100건 가정의 추정이며, 청구서 검증은
+    진행 예정입니다).
+    <a href="https://github.com/minseo0943/portfolio/blob/main/ai/youtube-step1-model-report.html">비교 리포트 ↗</a></p>
+    <h3>측정이 계속되게 만들기</h3>
+    <p>일회성 비교로 끝나지 않도록, 챗봇 경로는 호출당 토큰(입력/캐시/출력)·지연·프롬프트 버전·추정 비용을
+    DB에 영속화했습니다. 실제로 사후 SQL 한 벌이면 이런 답이 나옵니다(2026-07 운영 스냅숏): 누적 494콜,
+    호출당 평균 ₩0.46, v6→v7.2에서 p50 1,994→1,630ms · p95 6,414→4,534ms · Pro 모델 호출률 93.1→87.3%.
+    통제 실험은 아니지만, 운영 분포에서도 최종 버전에 지연 회귀가 없다는 걸 이 데이터로 확인했습니다.
+    프롬프트는 버전 있는 리소스 파일로 관리하고, 버전 라벨을 파일명에서 유도해 기록과 실체가
+    어긋나지 않게 했습니다.</p>
+    <h3>실험 규율 — 폐기도 결과다</h3>
+    <p>챗봇 프롬프트 개선은 4연속 통제 실험(단일 변수씩)으로 진행했습니다. 1차 실험은 "효과 없음"으로 판정하고
+    <strong>폐기 문서로 남겼습니다</strong>. 판정 자체가 실험의 목적이었기 때문입니다. 3차의 안전 강화 프롬프트는
+    지연을 +116% 악화시켰고, 최종안은 안전 개선을 유지한 채 그 회귀를 상쇄해 기존 수준으로 복원했습니다.
+    "-51% 개선"이 아니라 "+116% 회귀의 상쇄"라고 쓰는 것이 정확합니다.
+    <a href="https://github.com/minseo0943/portfolio/tree/main/ai">eval 문서 4편 ↗</a></p>
   </div>
-
-  <!-- METRICS GRAPHS -->
-  <div class="metrics-row reveal">
-    <div class="metric-card">
-      <div class="metric-card-header">
-        <div class="metric-card-dot"></div>
-        <span class="metric-card-label">MAU 추이</span>
-        <span class="metric-card-sub">Monthly Active Users</span>
-      </div>
-      <img src="mau.png" alt="MAU 추이 그래프" />
-    </div>
-    <div class="metric-card">
-      <div class="metric-card-header">
-        <div class="metric-card-dot" style="background:var(--green)"></div>
-        <span class="metric-card-label">DAU 추이</span>
-        <span class="metric-card-sub">Daily Active Users</span>
-      </div>
-      <img src="dau.png" alt="DAU 추이 그래프" />
-    </div>
-  </div>
-
-  <!-- ARCHITECTURE -->
-  <div class="arch-img-wrap reveal">
-    <h3>시스템 아키텍처</h3>
-    <img src="architecture.png" alt="Recipio 시스템 아키텍처 다이어그램" />
-  </div>
-
-  <!-- SERVICE SCREENS -->
-  <div class="reveal" style="margin-bottom:56px;">
-    <h3 style="font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;color:#aaa;">서비스 화면</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;">
-        <div style="position:relative;height:340px;overflow:hidden;background:#111;">
-          <img src="youtube.png" alt="유튜브 레시피 가져오기" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" />
-        </div>
-        <div style="padding:14px 16px;border-top:1px solid var(--border);">
-          <div style="font-size:0.82rem;font-weight:700;margin-bottom:4px;">유튜브 레시피 추출</div>
-          <div style="font-size:0.72rem;color:var(--muted);line-height:1.5;">URL 입력 → AI가 자막·영상 분석 → 레시피 자동 생성</div>
-        </div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;">
-        <div style="position:relative;height:340px;overflow:hidden;background:#111;">
-          <img src="ai-recipe.png" alt="AI 레시피 생성" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" />
-        </div>
-        <div style="padding:14px 16px;border-top:1px solid var(--border);">
-          <div style="font-size:0.82rem;font-weight:700;margin-bottom:4px;">AI 레시피 생성</div>
-          <div style="font-size:0.72rem;color:var(--muted);line-height:1.5;">냉장고 재료 · 가성비 · 영양 · 파인다이닝 4가지 모드</div>
-        </div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;">
-        <div style="position:relative;height:340px;overflow:hidden;background:#111;">
-          <img src="detail.png" alt="레시피 상세" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
-        </div>
-        <div style="padding:14px 16px;border-top:1px solid var(--border);">
-          <div style="font-size:0.82rem;font-weight:700;margin-bottom:4px;">AI 추출 결과</div>
-          <div style="font-size:0.72rem;color:var(--muted);line-height:1.5;">재료 · 가격 · 조리 스텝 · 타이머 자동 생성</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DECISIONS -->
-  <div class="reveal">
-    <h3 style="font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;color:#aaa;">기술적 의사결정</h3>
-    <div class="decisions-grid">
-      <div class="decision-card">
-        <div class="decision-q">왜 OpenSearch + Nori인가?</div>
-        <div class="decision-a">MySQL LIKE 검색으로 시작했지만 "볶다"로 검색해도 "제육볶음"이 나오지 않는 등 형태소 단위 처리가 불가했습니다. <strong>한글 형태소 분석</strong>이 필요했고, AWS 관리형으로 운영 부담을 줄일 수 있는 OpenSearch + Nori를 선택했습니다. 장애 시 QueryDSL로 자동 폴백되는 이중 구조로 검색이 완전히 죽지 않도록 설계했습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 Resilience4j 3중 보호인가?</div>
-        <div class="decision-a">AI API는 외부 서비스라 언제든 장애가 날 수 있습니다. <strong>CircuitBreaker</strong>로 연쇄 장애를 차단하고, <strong>Retry</strong>로 일시적 오류를 재시도하고, <strong>TimeLimiter</strong>로 무한 대기를 방지합니다. 이 3가지를 조합해 AI 서비스가 죽어도 나머지 기능은 정상 동작하는 구조를 만들었습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 Caffeine + Redis 2계층 캐시인가?</div>
-        <div class="decision-a">Redis만 쓰면 매 요청마다 네트워크를 타야 합니다. 인기 레시피처럼 자주 조회되는 데이터는 <strong>Caffeine으로 인메모리에서 즉시 반환</strong>하고, 거기 없을 때만 Redis를 조회합니다. 응답시간이 눈에 띄게 줄었습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 Multi-AI 전략인가?</div>
-        <div class="decision-a">Grok(레시피 추출), Gemini API(영상 분석·이미지 생성), Vertex AI(프롬프트 비학습 보장)를 <strong>역할별로 분리</strong>하고 5개 모델을 비교·선정했습니다. 단일 모델에 의존하면 장애나 비용 급등 시 서비스가 멈추는 리스크가 있습니다. Multi-AI 구조로 모델 교체나 A/B 테스트가 유연해졌습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 MDC 컨텍스트 전파인가?</div>
-        <div class="decision-a">비동기 스레드에서 로그 추적이 끊기는 문제가 있었습니다. <strong>TaskDecorator</strong>로 부모 스레드의 MDC 컨텍스트를 자식 스레드에 복사하여 traceId가 비동기 흐름에서도 끊기지 않도록 했습니다. 장애 발생 시 요청 단위 로그 추적이 가능해졌습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 yt-dlp 기반 YouTube 파이프라인인가?</div>
-        <div class="decision-a">YouTube 공식 API는 자막을 가져오는 데 제약이 있습니다. <strong>yt-dlp</strong>로 자막·설명·댓글을 통합 추출하고, User-Agent 회전 + 쿠키 풀로 차단을 우회합니다. 토큰 사용량을 40% 절감하는 컨텍스트 상한 제어와 다단계 AI 파이프라인을 조합해 레시피 추출 정확도를 높였습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 Feature Branch 워크플로우인가?</div>
-        <div class="decision-a">2인 백엔드에서 main 직접 푸시는 충돌과 장애 위험이 컸습니다. <strong>Feature Branch 워크플로우</strong>로 기능별 브랜치를 분리하고, feat/bugfix/refactor 접두사 + Conventional Commits(한글) 컨벤션을 적용해 394개 브랜치·811 커밋의 이력을 추적 가능하게 관리했습니다. 역할도 본인(AI·검색·인증·인프라) / 팀원(레시피 CRUD·커뮤니티)으로 명확히 나눠 충돌을 최소화했습니다.</div>
-      </div>
-      <div class="decision-card">
-        <div class="decision-q">왜 BDD 기반 134개 테스트인가?</div>
-        <div class="decision-a">서비스 로직이 20+ 레이어로 늘어나면서 한 곳을 고치면 다른 곳이 깨지는 회귀 버그가 반복됐습니다. JUnit5 + AssertJ + BDDMockito로 <strong>134개 테스트 케이스</strong>를 작성하고, BDD Given/When/Then 구조로 통일해 "무엇을 검증하는지"가 코드만 봐도 드러나도록 했습니다. 배포 전 회귀 검증이 자동화되면서 수정 속도가 빨라졌습니다.</div>
-      </div>
-    </div>
-  </div>
+  <div class="lesson">한계 — 서킷브레이커가 프로바이더별로 분리돼 있지 않아 한 프로바이더의 장애가 다른 경로까지
+  차단할 수 있는 구조입니다(분리안 설계 중). 언어 판별은 문자 비율 휴리스틱이라 오판 가능성이 있고,
+  챗봇 외 경로의 토큰은 아직 DB에 영속화되지 않습니다.</div>
 </section>
 
-<hr class="divider" />
-
-<!-- TROUBLESHOOTING -->
-<section id="troubleshooting">
-  <div class="reveal">
-    <p class="section-label">Troubleshooting</p>
-    <h2 class="section-title">장애 대응 & 문제 해결</h2>
-  </div>
-  <div class="trouble-list reveal">
-
-    <div class="trouble-card">
-      <div class="trouble-icon red">🔥</div>
-      <div>
-        <div class="trouble-title">OOM으로 컨테이너 강제 재시작</div>
-        <div class="trouble-body">
-          <div class="trouble-row">
-            <span class="trouble-key">상황</span>
-            <span class="trouble-val">추천 API에서 OutOfMemoryError 발생, ECS 컨테이너 강제 재시작으로 서비스 수 분 중단</span>
-          </div>
-          <div class="trouble-row">
-            <span class="trouble-key">원인</span>
-            <span class="trouble-val">GC 로그만으로 어떤 코드가 메모리를 점유하는지 특정 불가 → <strong>-XX:+HeapDumpOnOutOfMemoryError</strong> 플래그 추가 후 재현 시 힙 덤프 수집 → Eclipse MAT 분석 → 추천 로직에서 N개 레시피 × M개 재료의 카르테시안 곱이 수십만 개 객체를 메모리에 적재. 원인 파악까지 이틀 소요.</span>
-          </div>
-          <div class="trouble-row">
-            <span class="trouble-key">해결</span>
-            <span class="trouble-val">후보 50개 사전 제한 + 4단계 스코어링(요리 궁합 → 태그 → 재료 → 평점)으로 정확도를 유지하며 메모리 안정화. 이후 Grafana 모니터링으로 재발 추적.</span>
-          </div>
-          <div class="code-block">
-            <div class="code-cols">
-              <div>
-                <div class="code-col-label before">Before</div>
-                <pre class="code-pre before">// 전체 레시피 ID를 메모리에 로드
-List&lt;Long&gt; allIds =
-  recipeRepository.findAllPublicRecipeIds();
-Set&lt;Long&gt; uniqueIds = new HashSet&lt;&gt;(candidateIds);
-uniqueIds.addAll(allIds); // 수십만 개 객체 생성</pre>
-              </div>
-              <div>
-                <div class="code-col-label after">After</div>
-                <pre class="code-pre after">// 후보 50개로 사전 제한
-int candidatePoolSize = 50;
-List&lt;Long&gt; selectedIds = candidateIds.stream()
-  .filter(id -> !id.equals(currentRecipeId))
-  .limit(candidatePoolSize) // 상한 고정
-  .collect(Collectors.toList());</pre>
-              </div>
-            </div>
-          </div>
-          <span class="trouble-result">✓ OOM 재발 0건 · 힙 사용량 60~70% 안정</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="trouble-card">
-      <div class="trouble-icon yellow">⚡</div>
-      <div>
-        <div class="trouble-title">rollback-only 마킹으로 검색 API 전체 마비</div>
-        <div class="trouble-body">
-          <div class="trouble-row">
-            <span class="trouble-key">상황</span>
-            <span class="trouble-val">검색 API에서 원인 불명의 500 에러 간헐적 발생</span>
-          </div>
-          <div class="trouble-row">
-            <span class="trouble-key">원인</span>
-            <span class="trouble-val">일반 에러 로그로는 원인 불명 → <strong>org.springframework.transaction 로그 레벨을 DEBUG</strong>로 올려 전파 흐름 추적 → OpenSearch 인덱싱 실패가 상위 @Transactional의 트랜잭션을 <strong>rollback-only로 마킹</strong> → 커밋 시 UnexpectedRollbackException 발생하는 것 확인.</span>
-          </div>
-          <div class="trouble-row">
-            <span class="trouble-key">해결</span>
-            <span class="trouble-val">검색 서비스에 <strong>noRollbackFor = CustomException.class</strong> 추가해 예외 발생 시 rollback-only 마킹 방지. 인덱싱 실패 건은 별도 테이블에 기록 후 매일 04:00 배치로 자동 복구.</span>
-          </div>
-          <div class="code-block">
-            <div class="code-cols">
-              <div>
-                <div class="code-col-label before">Before</div>
-                <pre class="code-pre before">@Transactional(readOnly = true)
-public Page&lt;RecipeSimpleDto&gt; searchRecipes(
-  RecipeSearchCondition condition,
-  Pageable pageable, Long userId)</pre>
-              </div>
-              <div>
-                <div class="code-col-label after">After</div>
-                <pre class="code-pre after">@Transactional(readOnly = true,
-  noRollbackFor = CustomException.class)
-public Page&lt;RecipeSimpleDto&gt; searchRecipes(
-  RecipeSearchCondition condition,
-  Pageable pageable, Long userId)</pre>
-              </div>
-            </div>
-          </div>
-          <span class="trouble-result">✓ 검색 API 500 에러 0건 · rollback-only 마킹 방지로 읽기 트랜잭션 안정화</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="trouble-card">
-      <div class="trouble-icon blue">🎬</div>
-      <div>
-        <div class="trouble-title">YouTube 자막 추출 서버 IP 차단</div>
-        <div class="trouble-body">
-          <div class="trouble-row">
-            <span class="trouble-key">상황</span>
-            <span class="trouble-val">yt-dlp 기반 자막 추출이 서버 IP 차단으로 동작 불가</span>
-          </div>
-          <div class="trouble-row">
-            <span class="trouble-key">해결</span>
-            <span class="trouble-val"><strong>2단계 폴백</strong>: 1차(No Cookie + Proxy) → 2차(With Cookie + No Proxy). User-Agent 회전 + 쿠키 풀 적용으로 IP 차단 우회.</span>
-          </div>
-          <span class="trouble-result">✓ 차단 이후에도 자막 추출 기능 무중단 유지</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- BEFORE/AFTER -->
-  <div class="reveal" style="margin-top:48px;">
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;color:#aaa;">성능 개선 Before / After</h3>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <table class="ba-table">
-        <thead>
-          <tr>
-            <th>항목</th>
-            <th>Before</th>
-            <th>After</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>추천 API 메모리</td>
-            <td class="before">OOM 발생 (컨테이너 재시작)</td>
-            <td class="after">힙 60~70% 안정 · 재발 0건</td>
-          </tr>
-          <tr>
-            <td>LLM 토큰 비용</td>
-            <td class="before">전처리 없음</td>
-            <td class="after">컨텍스트 상한 제어로 약 40% 절감</td>
-          </tr>
-          <tr>
-            <td>검색 장애</td>
-            <td class="before">단일 장애점 (OpenSearch 다운 시 서비스 중단)</td>
-            <td class="after">QueryDSL 자동 폴백 · 중단 시간 0</td>
-          </tr>
-          <tr>
-            <td>인덱싱 실패</td>
-            <td class="before">데이터 유실</td>
-            <td class="after" style="border-bottom:none;">배치 자동 복구로 복구율 100%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<section id="limits">
+  <div class="sec-eyebrow">Known Gaps</div>
+  <h2>한계와 남은 과제 — 숨기지 않고 먼저 적습니다</h2>
+  <ul class="limits">
+    <li><strong>검색 스택 잔해</strong> — OpenSearch는 트래픽 차단 상태이지 코드 제거가 끝난 게 아닙니다. 단계적 제거가 백로그에 있습니다.</li>
+    <li><strong>번역 큐 관측 공백</strong> — 대기 잡 수 gauge 부재로 "조용한 정지" 탐지 불가. 잡큐 4벌 복제의 추상화도 함께 남았습니다.</li>
+    <li><strong>용량 임계 재측정</strong> — 컨테이너 3GiB 확대로 기존 OOM 임계(1.5GiB 기준)가 무효화됨. 하니스 재실행 예정.</li>
+    <li><strong>CI 테스트 게이트 부재</strong> — 테스트 2,500+개는 로컬 게이트로만 동작합니다. 실제로 회귀가 61커밋 방치된 사례가 있었습니다.</li>
+    <li><strong>AI 경로 비용 계측 편중</strong> — 챗봇만 영속화, 추출·생성 경로는 로그뿐입니다.</li>
+    <li><strong>버스트형 지표 알람 부재</strong> — IOPS 사고의 재발 방지(크레딧성 지표 알람)가 아직 미적용입니다.</li>
+  </ul>
 </section>
 
-<hr class="divider" />
-
-<!-- EDUCATION -->
-<section id="education">
-  <div class="reveal">
-    <p class="section-label">Education & Awards</p>
-    <h2 class="section-title">학력 & 수상</h2>
-  </div>
-  <div class="edu-list reveal">
-    <div class="edu-card">
-      <div class="edu-icon">🎓</div>
-      <div>
-        <div class="edu-name">세종대학교 소프트웨어학과</div>
-        <div class="edu-desc">2021.03 ~ 2025.08 (졸업)</div>
-      </div>
-    </div>
-    <div class="edu-card">
-      <div class="edu-icon">🏆</div>
-      <div>
-        <div class="edu-name">캡스톤디자인 SMART TOURNAMENT 장려상</div>
-        <div class="edu-desc">사물인터넷 혁신융합대학사업단 · 백엔드 설계·개발</div>
-      </div>
-      <span class="edu-badge">장려상</span>
-    </div>
-    <div class="edu-card">
-      <div class="edu-icon">🥇</div>
-      <div>
-        <div class="edu-name">세종대학교 해커톤 4위</div>
-        <div class="edu-desc">2025.05 · 백엔드 개발</div>
-      </div>
-      <span class="edu-badge">4위</span>
-    </div>
-  </div>
+<section id="profile" style="margin-top:72px">
+  <div class="sec-eyebrow">Education &amp; Awards</div>
+  <p style="font-size:13.5px;color:var(--sub)">세종대학교 소프트웨어학과 (2019.03–2025.08) · 캡스톤디자인 장려상(2025.06) · 교내 해커톤 4위(2025.05)</p>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-left">© 2025 장민서. All rights reserved.</div>
-  <div class="footer-links">
-    <a href="https://github.com/Haemeok/Haemeok-backend" target="_blank">GitHub</a>
-    <a href="https://recipio.kr" target="_blank">Recipio</a>
-    <a href="mailto:minseo09433@gmail.com">Email</a>
-  </div>
+  <span>recipio backend · 2024.08 – now</span>
+  <span><a href="https://github.com/minseo0943/portfolio">appendix: engineering notes ↗</a> · minseo0943@naver.com</span>
 </footer>
-
-<script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Nav active link
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? '#e8e8e8' : '';
-    });
-  });
-</script>
+</main>
 </body>
 </html>

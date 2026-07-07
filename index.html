@@ -4,8 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>장민서 — Backend Engineer</title>
+<meta name="description" content="레시피 플랫폼 Recipio 백엔드 2년 운영 기록 — 검색 p95 1,902→456ms, AI 추출 비용 20.7→2.3~5원/건, 번역 잡 106,938건, 장애 2건 진단·복구.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="장민서 — Backend Engineer">
+<meta property="og:description" content="서비스 하나를 2년. 만들고 운영하고 복구했습니다 — 증거가 남아 있는 것만 담은 포트폴리오.">
+<meta property="og:url" content="https://minseo0943.github.io/">
+<meta property="og:image" content="https://minseo0943.github.io/og-cover.png">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://minseo0943.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230E6E68'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='800'%3E장%3C/text%3E%3C/svg%3E">
 <style>
   :root{
+    color-scheme:light;
     --bg:#F7FAF9; --ink:#15211E; --sub:#566662; --accent:#0E6E68; --accent-deep:#0A514C;
     --card:#FFFFFF; --line:#DCE5E2; --chip:#E7F1EF; --warn:#8A5A00; --warn-bg:#F6EEDD;
     --mono:"SF Mono",Menlo,Consolas,monospace;
@@ -52,7 +62,7 @@
   section{margin-top:96px;scroll-margin-top:64px}
   .sec-eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;color:var(--accent);
     text-transform:uppercase;margin-bottom:12px}
-  .sec-eyebrow::before{content:"■ ";font-size:9px;vertical-align:2px}
+  .sec-eyebrow::before{content:"■ " / "";font-size:9px;vertical-align:2px}
   h2{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1.35;text-wrap:balance;
     margin-bottom:20px;max-width:640px}
   .prose{max-width:660px}
@@ -61,14 +71,16 @@
   .tag{font-family:var(--mono);font-size:12px;color:var(--sub);font-weight:400}
   .hash{font-family:var(--mono);font-size:12px;background:var(--chip);color:var(--accent);
     padding:1px 7px;border-radius:3px}
+  pre.code{background:#10201C;color:#D9E6E2;border-radius:8px;padding:14px 16px;font-family:var(--mono);
+    font-size:12px;line-height:1.65;overflow-x:auto;max-width:660px;margin:16px 0 0}
 
   /* role cards */
   .role{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
   .role .col{background:var(--card);border:1px solid var(--line);border-radius:6px;
     padding:16px 18px;font-size:13.5px;line-height:1.8}
-  .role h4{font-size:11.5px;letter-spacing:.1em;margin-bottom:8px;font-family:var(--mono)}
-  .role .mine{border-top:3px solid var(--accent)} .role .mine h4{color:var(--accent)}
-  .role .theirs h4,.role .both h4{color:var(--sub)}
+  .role .col-label{font-size:11.5px;letter-spacing:.1em;margin-bottom:8px;font-family:var(--mono);font-weight:700}
+  .role .mine{border-top:3px solid var(--accent)} .role .mine .col-label{color:var(--accent)}
+  .role .theirs .col-label,.role .both .col-label{color:var(--sub)}
   .role-note{margin-top:14px;font-size:13px;color:var(--sub);max-width:660px}
 
   /* stack chips */
@@ -119,9 +131,6 @@
   ul.limits li{padding-left:18px;position:relative;font-size:14.5px}
   ul.limits li::before{content:"—";position:absolute;left:0;color:var(--warn)}
 
-  .diagram-todo{max-width:660px;margin:24px 0;padding:36px 20px;border:1.5px dashed var(--line);
-    border-radius:6px;text-align:center;color:var(--sub);font-size:13px;font-family:var(--mono)}
-
   footer{margin-top:110px;padding-top:18px;border-top:1px solid var(--line);
     font-family:var(--mono);font-size:12px;color:var(--sub);display:flex;justify-content:space-between;
     flex-wrap:wrap;gap:8px}
@@ -129,11 +138,15 @@
   @media(max-width:720px){
     h1{font-size:32px}
     .stats,.role{grid-template-columns:1fr}
-    nav .links{display:none}
+    nav .in{padding:11px 16px}
+    nav .links{display:block;overflow-x:auto;white-space:nowrap;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none}
   }
   @media print{
-    nav{display:none} body{background:#fff}
+    nav{display:none} body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     section{margin-top:48px} .pending{display:none}
+    .lesson,.stat,ul.defects li,table.plain,pre.code{break-inside:avoid}
+    .prose a[href^="http"]::after{content:" (" attr(href) ")";font-family:var(--mono);font-size:10.5px;color:var(--sub)}
   }
 </style>
 </head>
@@ -152,17 +165,17 @@
 
 <header>
   <div class="eyebrow">Backend Engineer · Portfolio</div>
-  <h1>서비스 하나를 <b>2년</b> —<br>만들고, 운영하고, 복구했습니다.</h1>
+  <h1>서비스 하나를 <b>2년</b>.<br>만들고 운영하고 복구했습니다.</h1>
   <p class="lede">레시피 플랫폼 Recipio(해먹)를 3인 팀(백엔드 2 · 프론트 1)에서 백엔드 담당으로 만들고 운영해왔습니다.
-  트래픽이 생기면서 성능 문제와 장애를 겪었고, AI API 청구서도 줄여야 했습니다.
+  트래픽이 생기면서 성능 문제와 장애를 겪었고 AI API 청구서도 줄여야 했습니다.
   이 문서에는 그 과정에서 <strong>증거가 남아 있는 것만</strong> 담았습니다.</p>
   <div class="idline"><b>장민서</b> · Backend Engineer · minseo0943@naver.com</div>
 
   <div class="stats">
     <div class="stat">
-      <div class="v">MAU <span class="pending">확정 대기</span></div>
-      <div class="k">월간 활성 사용자</div>
-      <div class="m">PostHog</div>
+      <div class="v">106,938<small> 잡</small></div>
+      <div class="k">번역 파이프라인 처리 · 실패 0.02%</div>
+      <div class="m">prod 스냅숏 2026-07</div>
     </div>
     <div class="stat">
       <div class="v">1,902 → 456<small> ms</small></div>
@@ -170,16 +183,16 @@
       <div class="m">testcontainers + k6 · 10만 건 · c8</div>
     </div>
     <div class="stat">
-      <div class="v">20.7 → 2.3<small> 원/건</small></div>
+      <div class="v">20.7 → 2.3~5<small> 원/건</small></div>
       <div class="k">AI 추출 비용 · 언어 기반 라우팅</div>
       <div class="m">n=192 실측</div>
     </div>
   </div>
 
   <div class="role">
-    <div class="col mine"><h4>주도</h4>AI 파이프라인(생성·유튜브 추출·챗봇) · 검색 엔진 구축과 다국어 검색 · 추천·성능 최적화 · 다국어(i18n) 파이프라인 · 모니터링(Prometheus/Grafana)</div>
-    <div class="col theirs"><h4>백엔드 팀원 주도</h4>인증(OAuth 4사 · JWT · 토큰 회전) · 초기 AWS/ECS 배포 파이프라인 · 냉장고·레시피북 도메인</div>
-    <div class="col both"><h4>공동</h4>레시피 코어 도메인 · 유튜브 추출(AI·동시성 설계=본인 / API 계층=팀원) · DB 마이그레이션 · 테스트</div>
+    <div class="col mine"><p class="col-label">주도</p>AI 파이프라인(생성·유튜브 추출·챗봇) · 검색 엔진 구축과 다국어 검색 · 추천·성능 최적화 · 다국어(i18n) 파이프라인 · 모니터링(Prometheus/Grafana)</div>
+    <div class="col theirs"><p class="col-label">백엔드 팀원 주도</p>인증(OAuth 4사 · JWT · 토큰 회전) · 초기 AWS/ECS 배포 파이프라인 · 냉장고·레시피북 도메인</div>
+    <div class="col both"><p class="col-label">공동</p>레시피 코어 도메인 · 유튜브 추출(AI·동시성 설계=본인 / API 계층=팀원) · DB 마이그레이션 · 테스트</div>
   </div>
   <p class="role-note">백엔드 전체 1,704 커밋 중 1,150개(67%)가 제 커밋이며, 이 문서의 사례는 전부 커밋 단위로 제가 작성한 것인지 확인한 뒤 실었습니다.</p>
 </header>
@@ -188,20 +201,21 @@
   <div class="sec-eyebrow">Service &amp; Timeline</div>
   <h2>서비스와 2년의 타임라인</h2>
   <div class="chips">
-    <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway ×93</span><span>Tests 2,500+</span>
+    <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway 90+</span><span>Tests 2,500+</span>
   </div>
-  <figure style="max-width:960px;margin:26px 0 8px">
-  <img src="architecture-v3.png"
+  <figure style="margin:26px 0 8px">
+  <a href="architecture-v3.png" target="_blank" rel="noopener">
+  <img src="architecture-v3.png" width="2000" height="945"
        alt="Recipio 백엔드 아키텍처 — iOS/Android·Web 클라이언트, OAuth 4사, CI/CD(GitHub Actions·ECR), AWS ECS(EC2) 위 Spring Boot(Resilience4j·WebSocket·JPA), MySQL·Redis·S3·Caffeine·Prometheus·Grafana, AI 서비스(DeepSeek·Upstage·Gemini)와 언어 라우팅, YouTube yt-dlp, 쿠팡 파트너스"
        style="width:100%;height:auto;border:1px solid #DCE5E2;border-radius:10px;background:#fff;padding:10px 8px"
-       loading="lazy">
+       loading="lazy"></a>
   <figcaption style="font-size:12px;color:var(--sub);margin-top:8px">
     운영 아키텍처 개요 — 검색·추천·AI·번역이 하나의 Spring Boot 서비스 안에서 플래그와 전용 스레드풀로 격리되어 동작합니다.
   </figcaption>
   </figure>
   <div class="tl">
     <div class="ev dim">
-      <div class="when">2025 상반기</div>
+      <div class="when">2024 하반기 – 2025 상반기</div>
       <h3>구축</h3>
       <p>레시피 CRUD·댓글·태그·평점, OpenSearch 기반 검색 엔진, OpenAI 기반 AI 레시피 생성.</p>
     </div>
@@ -215,7 +229,7 @@
       <div class="when">2026 상반기</div>
       <h3>파이프라인과 운영</h3>
       <p>유튜브 영상에서 레시피를 추출하는 파이프라인을 만들었습니다. 같은 영상에 동시 요청이 몰리면
-      추출은 한 번만 하는 합승(bus) 구조와 3단계 트랜잭션 경계를 설계하고, 동시성 통합 테스트로 고정했습니다.
+      추출은 한 번만 하는 합승(bus) 구조와 3단계 트랜잭션 경계를 설계하고 동시성 통합 테스트로 고정했습니다.
       이때 구축한 Prometheus/Grafana 모니터링이 이후 모든 진단의 출발점이 됐습니다.</p>
     </div>
     <div class="ev">
@@ -228,7 +242,7 @@
 
   <div class="prose" style="margin-top:36px">
     <h3>검색 스택의 수명주기 — 도입한 사람이 제거를 검증하다</h3>
-    <p>2025년 5월 OpenSearch를 도입해 검색을 만들었고, 하이브리드 재료 검색과 장애 시 QueryDSL 폴백까지 운영했습니다.
+    <p>2025년 5월 OpenSearch를 도입해 검색을 만들었고 하이브리드 재료 검색과 장애 시 QueryDSL 폴백까지 운영했습니다.
     2026년, 프리티어 종료로 비용 부담이 커지자 팀은 제거를 결정했습니다. 제 역할은 <strong>"MySQL만으로 버틸 수 있는가"의 검증</strong>이었습니다.
     10만 건·동시 8 조건에서 LIKE p95가 1,902ms, 튜닝한 MySQL 경로가 456ms로 기준 500ms를 통과해
     제거 가능으로 판정했습니다. ko 메인 검색의 ngram FULLTEXT 전환 구현은 팀원의 작업이고, 저는 그 위에
@@ -239,53 +253,61 @@
 
 <section id="dd1">
   <div class="sec-eyebrow">Deep Dive 01 · i18n Pipeline</div>
-  <h2>10만 건 번역을 감당하는 파이프라인 —<br>외부 큐 없이, 실패를 1급 시민으로</h2>
+  <h2>10만 건 번역을 감당하는 파이프라인 —<br>외부 큐 없이, 실패 처리를 설계의 중심에</h2>
   <div class="prose">
-    <p>2년 차, 서비스를 일본어·영어권으로 확장하기로 했습니다. 레시피 본문·재료명·단위·댓글·큐레이션까지,
+    <p>2년 차, 서비스를 일본어·영어권으로 확장하기로 했습니다. 레시피 본문·재료명·단위·댓글까지,
     대상은 레시피 번역 잡만 누적 10만 7천 건입니다(2026-07 운영 스냅숏 106,938건).
     요청 시점 번역으로는 감당할 수 없는 규모였습니다.
     이 파이프라인은 커밋 기준 제가 단독 구현했습니다(i18n 경로 81:3).</p>
-    <p>번역을 API 호출이 아니라 <strong>비동기 잡·상태 기계·복구 수단</strong>의 문제로 정의했습니다.
-    운영해 보면 AI 번역은 실패하고, 부분적으로 실패하고, 같은 방식으로 다시 실패합니다.
-    그래서 번역 함수보다 실패를 관리하는 시스템이 먼저 필요했습니다.</p>
+    <p>번역 그 자체는 API 호출 한 번입니다. 어려운 건 실패 쪽이라, 이 작업을 비동기 잡·상태 기계·복구
+    수단의 문제로 정의했습니다. 운영해 보면 AI 번역은 실패합니다. 그것도 부분적으로,
+    지난번과 같은 방식으로 다시.</p>
 
     <h3>왜 SQS가 아니라 MySQL 잡큐인가</h3>
     <p>잡 상태는 운영 중에 조회하고 리셋하고 우선순위도 바꿔야 하는 <strong>도메인 데이터</strong>였습니다.
-    외부 큐를 쓰면 잡 상태와 도메인 데이터의 트랜잭션 정합을 따로 맞춰야 하고, 단일 RDS·2인 팀 환경에서
+    외부 큐를 쓰면 잡 상태와 도메인 데이터의 트랜잭션 정합을 따로 맞춰야 하고 단일 RDS·2인 팀 환경에서
     인프라 추가 비용도 정당화되지 않았습니다. UNIQUE(recipe, locale) 제약으로 enqueue 멱등성을 DB가 보장합니다.
     잡큐 패턴 자체는 사내 기존 코드에서 가져왔습니다. 제가 한 일은 이 패턴에 숨어 있던 결함 세 개를
     실측으로 찾아 메운 것입니다:</p>
   </div>
   <ul class="defects">
-    <li><b>경쟁 패배 ≠ 큐 비움</b> — 두 워커가 같은 잡을 두고 경쟁해 진 쪽이 "큐가 비었다"고 판단하고 멈추는 버그.
+    <li><b>경쟁 패배 ≠ 큐 비움.</b> 두 워커가 같은 잡을 두고 경쟁해 진 쪽이 "큐가 비었다"고 판단하고 멈추는 버그.
       원자적 선점(UPDATE 한 문장의 CAS)과 재스캔 루프로 분리</li>
-    <li><b>afterCommit enqueue 유실</b> — 커밋 이후 훅에서 enqueue하면 이미 끝난 트랜잭션에 참여해
+    <li><b>afterCommit enqueue 유실.</b> 커밋 이후 훅에서 enqueue하면 이미 끝난 트랜잭션에 참여해
       INSERT가 사라지는 Spring 트랜잭션 동기화 함정. 신규 트랜잭션으로 분리</li>
-    <li><b>poison job 무한 재선점</b> — 워커를 죽이는 잡은 재시도 카운트가 영원히 오르지 않아 무한 재선점됨.
+    <li><b>poison job 무한 재선점.</b> 워커를 죽이는 잡은 재시도 카운트가 영원히 오르지 않아 무한 재선점됨.
       선점 횟수를 별도로 세어 AI 호출 전에 격리. "최대 선점 &gt; 최대 재시도" 불변식을 주석으로 문서화</li>
   </ul>
+  <pre class="code"><code>-- 선점 CAS: 후보 id를 SELECT한 뒤, 같은 조건을 WHERE로 재검사하며 RUNNING 전환
+UPDATE recipe_translation_jobs
+   SET status = 'RUNNING', locked_until = :lockedUntil, claim_count = claim_count + 1
+ WHERE id = :id
+   AND (status IN ('PENDING','STALE')
+        OR (status = 'FAILED'  AND retry_count &lt; :maxRetry)
+        OR (status = 'RUNNING' AND locked_until &lt; :now AND retry_count &lt; :maxRetry))
+-- affected 1 = 이 워커가 선점 · 0 = 경쟁 패배 → 다음 후보 재스캔</code></pre>
   <div class="prose">
     <p style="margin-top:14px">이 설계가 실전에서 작동한 흔적이 잡 테이블에 남아 있습니다.
     누적 106,938건 중 99.6%가 한 번의 선점으로 끝났고, 재선점 2회 이상은 479건,
-    최대 4회 1건으로 격리 임계 안입니다. 잡당 평균 처리는 4.4~6.6초입니다.</p>
-    <h3>per-step 폴백 — 실패 패턴에 맞춘 재시도</h3>
+    최대 4회 1건으로 격리 임계 안입니다. 잡당 평균 처리는 ja/en 기준 4.4~6.6초입니다.</p>
+    <h3>실패 패턴에 맞춘 per-step 폴백</h3>
     <p>통짜 번역이 "조리 스텝 개수 불일치"로 실패하는 패턴이 반복됐습니다. 그래서 마지막 시도에서는 스텝을
     1건씩 번역하는 폴백으로 전환하게 했습니다. 호출 하나가 스텝 하나만 처리하니 개수 불일치가 구조적으로
-    불가능해집니다. kill switch와 전용 카운터도 함께 심었습니다. 운영 스냅숏이 결과를 보여줍니다.
-    전체 잡 중 FAILED는 25건(0.02%)이고, 실패 목록에 스텝 개수 불일치 유형은 한 건도 없습니다.
+    불가능해집니다. kill switch와 전용 카운터도 함께 심었습니다.
+    전체 잡 중 FAILED는 25건(0.02%)입니다. 실패 목록에 스텝 개수 불일치 유형은 한 건도 없습니다.
     남은 실패는 대부분 번역 출력에 원문 한글이 남으면 차단하는 언어 순수성 게이트가 의도적으로 잡은 것이고,
-    나머지는 일시적 503입니다. per-step 번역은 스텝 사이 문맥을
+    나머지는 일시적 503 등입니다. per-step 번역은 스텝 사이 문맥을
     잃지만, 폴백까지 오는 레시피는 애초에 원본부터 조각나 있어서 문맥 손실을 감수하고라도 404 대신
     서빙하는 쪽이 낫다고 판단했습니다.</p>
-    <h3>제품 정책과의 결합 — strict 노출 게이트</h3>
+    <h3>제품 정책과 물린 strict 노출 게이트</h3>
     <p>미번역 콘텐츠는 노출하지 않는 정책(미번역 상세=404)을 선택했습니다. 반쪽 번역 페이지가 SEO에도
     사용자 신뢰에도 더 해롭다고 봤기 때문입니다. 이 정책이 성립하려면 "어떤 레시피가 어떤 언어로 노출
-    가능한가"의 명단이 항상 정확해야 합니다. 그래서 번역 상태의 진실로부터 명단을 멱등 재계산하는 서비스를
-    저장 트랜잭션에 참여시켰습니다. 다만 전면 404는 아니고, 단위나 조리도구 같은 부속 필드는 원문으로 낮춰
+    가능한가"의 명단이 항상 정확해야 합니다. 이 명단은 번역 상태의 진실로부터 멱등 재계산되고,
+    재계산 서비스는 저장 트랜잭션에 함께 참여합니다. 다만 전면 404는 아니고, 단위나 조리도구 같은 부속 필드는 원문으로 낮춰
     보여줍니다. 단위 하나 때문에 레시피 전체를 막을 이유는 없으니까요.</p>
   </div>
   <div class="lesson">한계 — 큐 깊이(대기 잡 수)를 상시 관측하는 지표가 없어 "조용한 정지"를 대시보드가 못 잡습니다.
-  같은 잡큐 패턴이 4개 도메인에 복사돼 있어 수정 전파가 느립니다. 둘 다 인지하고 있는 다음 과제입니다.</div>
+  같은 잡큐 패턴이 4개 도메인에 복사돼 있어 수정 전파가 느립니다. 둘 다 다음 과제로 적어뒀습니다.</div>
 </section>
 
 <section id="dd2">
@@ -304,20 +326,19 @@
     </div>
     <div class="ev">
       <div class="when">2026-06-24 <span class="hash">a560b9c1</span></div>
-      <h3>1막 — 커넥션 풀 고갈, 설정 한 줄로 종결</h3>
-      <p>번역 코퍼스가 약 8.7만 행까지 자라자 LIKE 풀스캔 검색이 커넥션을 초 단위로 점유했고,
-      풀 30개가 고갈되며 검색과 무관한 로그인·상세·사이트맵까지 연쇄로 5xx가 났습니다.
-      커넥션 풀은 서비스 전체가 나눠 쓰는 자원이라, 한 경로의 느린 쿼리가 곧 전체 장애가 됩니다.</p>
+      <h3>1막 · 커넥션 풀 고갈, 설정 한 줄로 종결</h3>
+      <p>번역 코퍼스가 약 8.7만 행까지 자라자 LIKE 풀스캔 검색이 커넥션을 초 단위로 점유하기 시작했습니다.
+      풀 30개가 고갈되며 검색과 무관한 로그인·상세·사이트맵까지 연쇄로 5xx가 났습니다.</p>
       <p style="margin-top:10px">수습은 설정 한 줄이었습니다. <strong>13일 전, FULLTEXT 검색 경로를 플래그 off 상태로
-      미리 배포해뒀기 때문입니다</strong>(dark deploy). 플래그를 켜는 것으로 종결했고,
+      미리 배포해뒀기 때문입니다</strong>(dark deploy). 플래그를 켜는 것으로 종결했고
       위험 경로에는 쿼리당 5초 타임아웃을 다음 날 추가했습니다.</p>
       <div class="note">복기 — 만들어두고 왜 미리 안 켰는가. "측정 후 활성화" 원칙을 지키는 사이 데이터가
       먼저 임계를 넘었습니다. <b>게이트 뒤에 둔 경로는 켜지는 조건(데이터 성장 트리거)까지 설계에 포함해야
-      한다</b>는 게 이때 얻은 교훈이고, 이후 플래그 운영의 기본값이 됐습니다.</div>
+      한다</b>는 교훈을 얻었고 이후 플래그 운영의 기본값이 됐습니다.</div>
     </div>
     <div class="ev miss">
       <div class="when">2026-06-29 <span class="hash">37d2f245</span></div>
-      <h3>2막 — 같은 증상이 돌아왔다, 이번엔 디스크</h3>
+      <h3>2막 · 같은 증상이 돌아왔다, 이번엔 디스크</h3>
       <p>닷새 뒤 전 구간이 느려졌고 COUNT 쿼리 하나가 30초를 넘겼습니다.
       처음엔 직전 배포의 무거운 쿼리를 의심해 최적화했지만 효과가 없었습니다.
       증상을 원인으로 착각한 겁니다.</p>
@@ -332,21 +353,21 @@
       <tr><td>PK 단건 조회 정상</td><td>버퍼풀에 있는 페이지 접근 정상</td></tr>
       <tr><td>스캔 쿼리만 일제히 지연</td><td><strong>디스크를 읽는 순간만 느리다</strong></td></tr>
     </table></div>
-    <p>병목은 쿼리가 아니라 스토리지였습니다. CloudWatch에서 <strong>BurstBalance = 0</strong>을 확인했습니다.
+    <p>병목은 스토리지였습니다. 쿼리는 멀쩡했습니다. CloudWatch에서 <strong>BurstBalance = 0</strong>을 확인했습니다.
     gp2 20GiB 볼륨의 기준 성능은 100 IOPS인데, 데이터와 트래픽이 자라며 버스트 크레딧이 바닥난 것입니다.
-    캡처를 보면 크레딧은 사고 전날 이미 고갈됐고, 하루 가까이 스로틀 상태로 달리고 있었습니다.
+    캡처를 보면 크레딧은 사고 전날 이미 고갈됐고 하루 가까이 스로틀 상태로 달리고 있었습니다.
     쿼리 튜닝으로 풀 수 없는 문제라 스토리지를 gp3(기준 3,000 IOPS, 월 비용은 오히려 감소)로 무중단 전환해
     종결했습니다. RAM 증설은 비용이 몇 배로 뛰는 데다 재시작이 필요했고, 리드 레플리카는 읽기를 나눌 뿐
     IOPS 문제 자체를 풀지 못합니다. gp3 전환이 가장 정확한 처방이었습니다.
     <a href="https://github.com/minseo0943/portfolio/blob/main/incidents/2026-06-29-rds-gp2-iops-exhaustion.md">회고 전문·캡처 ↗</a></p>
   </div>
   <div class="lesson">이 사고에서 진단법보다 아픈 교훈이 하나 있습니다. 사고 7주 전 벤치마크 문서에
-  "운영 gp2 스로틀 가능성"을 제 손으로 적어놓고도 알람을 걸지 않았습니다. 위험을 인지하는 것과 지표로
-  관리하는 것은 다른 일이었고, 그 간극을 잇는 일이 재발 방지 항목으로 남아 있습니다.</div>
+  "운영 gp2 스로틀 가능성"을 제 손으로 적어놓고도 알람을 걸지 않았습니다.
+  그 간극을 잇는 일이 재발 방지 항목으로 남아 있습니다.</div>
   <div class="prose">
-    <h3>3막 — 임계를 미리 재다 <span class="tag">용량 산정</span></h3>
+    <h3>3막 · 임계를 미리 재다 <span class="tag">용량 산정</span></h3>
     <p>장애 수습에서 멈추지 않고 다음 임계를 미리 쟀습니다. 유튜브 추출 경로가 메모리를 얼마나 견디는지
-    보려고 운영과 동일한 1.5GiB 컨테이너를 재현해 부하를 걸었고, <strong>동시 20건에서 OOM kill(exit 137)</strong>이라는
+    보려고 운영과 동일한 1.5GiB 컨테이너를 재현해 부하를 걸었고 <strong>동시 20건에서 OOM kill(exit 137)</strong>이라는
     임계를 얻었습니다. 결론은 "스레드풀을 늘리지 말 것". 이후 팀이 컨테이너 메모리를 3GiB로 늘려서 이 수치는
     재측정이 필요해졌습니다. 측정 하니스는 재현 가능하게 남아 있어 다시 돌리면 됩니다.
     <a href="https://github.com/minseo0943/portfolio/blob/main/performance/youtube-extraction-capacity.md">측정 문서 ↗</a></p>
@@ -364,31 +385,31 @@
   </div>
   <div class="prose">
     <p>2025년 6월 OpenAI로 AI 레시피 생성을 시작한 뒤 1년간 프로바이더를 네 번 갈아탔습니다.
-    전환마다 이유가 있었지만, 초기 전환은 솔직히 감에 가까웠습니다. 이 장은 그 감을 <strong>실측으로 바꾼</strong>
+    전환마다 이유가 있었지만 초기 전환은 솔직히 감에 가까웠습니다. 이 장은 그 감을 <strong>실측으로 바꾼</strong>
     마지막 전환의 기록입니다.</p>
     <p>유튜브 추출 1단계(자막→구조화)에 쓰던 Grok은 품질이 좋았지만 건당 약 20.7원이었습니다.
     더 싼 모델로 바꾸려던 첫 시도(일괄 전환)는 품질 결함 5종을 만들어 롤백했습니다.
-    <strong>모델 전환은 평균 점수가 아니라 실패 패턴으로 평가해야 한다</strong>는 걸 이때 배웠습니다.</p>
+    이후로 모델 전환은 <strong>실패 패턴</strong>으로 평가합니다. 평균 점수는 이런 결함을 가려버립니다.</p>
     <h3>실측, 그리고 라우팅</h3>
     <p>표본 192건으로 Gemini·DeepSeek을 비교하고 Grok 운영 실측을 기준점으로 삼았습니다.
     둘을 가른 것은 능력 하나였습니다. <strong>깨진 한국어 ASR 자막의 복원</strong>("실레기"→"시래기")에서
-    Gemini는 6건 중 6건을 살렸고, 비추론 모델은 0건이었습니다. 그런데 이 능력이 필요한 건 한국어 영상뿐입니다.
+    Gemini는 6건 중 6건을 살렸고 비추론 모델은 0건이었습니다. 그런데 이 능력이 필요한 건 한국어 영상뿐입니다.
     그래서 모델을 하나 고르는 대신 <strong>언어로 라우팅</strong>했습니다. 복원이 필요한 한국어는 Gemini(3~5원),
     그 외 언어는 DeepSeek(2.3원)입니다. 배포는 기본값을 기존 Grok으로 둔 hidden deploy로 하고 설정 전환으로
-    활성화했습니다. 설계 기준 비용은 기존 대비 약 1/5 수준입니다(일 100건 가정의 추정이며, 청구서 검증은
-    진행 예정입니다).
+    활성화했습니다. 설계 기준 비용은 기존 대비 약 1/5 수준입니다.
+    다만 일 100건 가정의 추정이라 청구서 검증을 진행할 예정입니다.
     <a href="https://github.com/minseo0943/portfolio/blob/main/ai/youtube-step1-model-report.html">비교 리포트 ↗</a></p>
     <h3>측정이 계속되게 만들기</h3>
-    <p>일회성 비교로 끝나지 않도록, 챗봇 경로는 호출당 토큰(입력/캐시/출력)·지연·프롬프트 버전·추정 비용을
+    <p>일회성 비교로 끝나지 않도록 챗봇 경로는 호출당 토큰(입력/캐시/출력)·지연·프롬프트 버전·추정 비용을
     DB에 영속화했습니다. 실제로 사후 SQL 한 벌이면 이런 답이 나옵니다(2026-07 운영 스냅숏): 누적 494콜,
     호출당 평균 ₩0.46, v6→v7.2에서 p50 1,994→1,630ms · p95 6,414→4,534ms · Pro 모델 호출률 93.1→87.3%.
-    통제 실험은 아니지만, 운영 분포에서도 최종 버전에 지연 회귀가 없다는 걸 이 데이터로 확인했습니다.
-    프롬프트는 버전 있는 리소스 파일로 관리하고, 버전 라벨을 파일명에서 유도해 기록과 실체가
+    통제 실험은 아니지만 운영 분포에서도 최종 버전에 지연 회귀가 없다는 걸 이 데이터로 확인했습니다.
+    프롬프트는 버전 있는 리소스 파일로 관리하고 버전 라벨을 파일명에서 유도해 기록과 실체가
     어긋나지 않게 했습니다.</p>
-    <h3>실험 규율 — 폐기도 결과다</h3>
+    <h3>폐기 문서도 결과다</h3>
     <p>챗봇 프롬프트 개선은 4연속 통제 실험(단일 변수씩)으로 진행했습니다. 1차 실험은 "효과 없음"으로 판정하고
-    <strong>폐기 문서로 남겼습니다</strong>. 판정 자체가 실험의 목적이었기 때문입니다. 3차의 안전 강화 프롬프트는
-    지연을 +116% 악화시켰고, 최종안은 안전 개선을 유지한 채 그 회귀를 상쇄해 기존 수준으로 복원했습니다.
+    폐기 문서로 남겼습니다. 판정 자체가 실험의 목적이었기 때문입니다. 3차의 안전 강화 프롬프트는
+    지연을 +116% 악화시켰고 최종안은 안전 개선을 유지한 채 그 회귀를 상쇄했습니다(v6 대비 +7%).
     "-51% 개선"이 아니라 "+116% 회귀의 상쇄"라고 쓰는 것이 정확합니다.
     <a href="https://github.com/minseo0943/portfolio/tree/main/ai">eval 문서 4편 ↗</a></p>
   </div>
@@ -399,18 +420,20 @@
 
 <section id="limits">
   <div class="sec-eyebrow">Known Gaps</div>
-  <h2>한계와 남은 과제 — 숨기지 않고 먼저 적습니다</h2>
+  <h2>한계와 남은 과제부터 먼저 적습니다</h2>
   <ul class="limits">
-    <li><strong>검색 스택 잔해</strong> — OpenSearch는 트래픽 차단 상태이지 코드 제거가 끝난 게 아닙니다. 단계적 제거가 백로그에 있습니다.</li>
-    <li><strong>번역 큐 관측 공백</strong> — 대기 잡 수 gauge 부재로 "조용한 정지" 탐지 불가. 잡큐 4벌 복제의 추상화도 함께 남았습니다.</li>
-    <li><strong>용량 임계 재측정</strong> — 컨테이너 3GiB 확대로 기존 OOM 임계(1.5GiB 기준)가 무효화됨. 하니스 재실행 예정.</li>
-    <li><strong>CI 테스트 게이트 부재</strong> — 테스트 2,500+개는 로컬 게이트로만 동작합니다. 실제로 회귀가 61커밋 방치된 사례가 있었습니다.</li>
-    <li><strong>AI 경로 비용 계측 편중</strong> — 챗봇만 영속화, 추출·생성 경로는 로그뿐입니다.</li>
-    <li><strong>버스트형 지표 알람 부재</strong> — IOPS 사고의 재발 방지(크레딧성 지표 알람)가 아직 미적용입니다.</li>
+    <li><strong>검색 스택 잔해.</strong> OpenSearch는 트래픽 차단 상태이지 코드 제거가 끝난 게 아닙니다. 단계적 제거가 백로그에 있습니다.</li>
+    <li><strong>번역 큐 관측 공백.</strong> 대기 잡 수 gauge 부재로 "조용한 정지" 탐지 불가. 잡큐 4벌 복제의 추상화도 함께 남았습니다.</li>
+    <li><strong>용량 임계 재측정.</strong> 컨테이너 3GiB 확대로 기존 OOM 임계(1.5GiB 기준)가 무효화됨. 하니스 재실행 예정.</li>
+    <li><strong>CI 테스트 게이트 부재.</strong> 테스트 2,500+개는 로컬 게이트로만 동작합니다. 실제로 회귀가 61커밋 방치된 사례가 있었습니다.</li>
+    <li><strong>AI 경로 비용 계측 편중.</strong> 챗봇만 영속화, 추출·생성 경로는 로그뿐입니다.</li>
+    <li><strong>버스트형 지표 알람 부재.</strong> IOPS 사고의 재발 방지(크레딧성 지표 알람)가 아직 미적용입니다.</li>
   </ul>
+  <p style="margin-top:18px;font-size:14px;max-width:660px">위 과제들은 지금 규모에서 제가 찾은 답의
+  한계이기도 합니다. 더 큰 트래픽과 팀에서는 같은 문제를 어떻게 푸는지 배우러 갑니다.</p>
 </section>
 
-<section id="profile" style="margin-top:72px">
+<section id="profile">
   <div class="sec-eyebrow">Education &amp; Awards</div>
   <p style="font-size:13.5px;color:var(--sub)">세종대학교 소프트웨어학과 (2019.03–2025.08) · 캡스톤디자인 장려상(2025.06) · 교내 해커톤 4위(2025.05)</p>
 </section>

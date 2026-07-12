@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>장민서 — Backend Engineer</title>
-<meta name="description" content="레시피 플랫폼 Recipio 백엔드 2년 차 운영 기록 — 검색 p95 1,902→456ms, AI 추출 비용 20.7→2.3~5원/건, 번역 잡 106,938건, 장애 2건 진단·복구.">
+<meta name="description" content="월 활성 사용자 9만 레시피 플랫폼 Recipio의 백엔드 2년 차 운영 기록 — 검색 p95 1,902→456ms, AI 추출 비용 20.7→2.3~5원/건, 번역 잡 106,938건, 장애 2건 진단·복구.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="장민서 — Backend Engineer">
 <meta property="og:description" content="서비스 하나를 2년째. 만들고 운영하고 복구했습니다 — 증거가 남아 있는 것만 담은 포트폴리오.">
@@ -174,7 +174,7 @@
     <a href="#dd1">i18n 파이프라인</a> ·
     <a href="#dd2">장애 연작</a> ·
     <a href="#dd3">AI 비용</a> ·
-    <a href="#limits">한계</a>
+    <a href="#limits">다음 과제</a>
   </span>
 </div></nav>
 <main>
@@ -211,7 +211,6 @@
     <div class="col theirs"><p class="col-label">백엔드 팀원 주도</p>인증(OAuth 4사 · JWT · 토큰 회전) · 초기 AWS/ECS 배포 파이프라인 · 냉장고·레시피북 도메인</div>
     <div class="col both"><p class="col-label">공동</p>레시피 코어 도메인 · 유튜브 추출(AI·동시성 설계=본인 / API 계층=팀원) · DB 마이그레이션 · 테스트</div>
   </div>
-  <p class="role-note">이 문서의 사례는 전부 커밋 단위로 제가 작성한 것인지 확인한 뒤 실었습니다.</p>
 </header>
 
 <section id="timeline">
@@ -219,11 +218,17 @@
   <h2>서비스 개요와 타임라인</h2>
   <p class="prose" style="margin-top:14px">Recipio(해먹)는 유튜브 요리 영상을 구조화된 레시피로 추출하고
   텍스트로도 생성하는 AI 레시피 서비스입니다. 한국어·일본어·영어 3개 언어로 서빙하며
-  검색·추천·요리 기록·챗봇과 쿠팡 파트너스 연동을 제공합니다.</p>
+  검색·추천·요리 기록·챗봇과 쿠팡 파트너스 연동을 제공합니다.
+  월 활성 사용자는 약 9만 명입니다.</p>
   <a class="service-cta" href="https://www.recipio.kr" target="_blank" rel="noopener">
     <img src="recipio-logo.png" alt="Recipio 로고" width="22" height="22">
     <span><b>www.recipio.kr</b> — 라이브 서비스 ↗</span>
   </a>
+  <figure style="margin:16px 0 0;max-width:560px">
+    <img src="traffic-ga4.png" alt="GA4 최근 30일 — 활성 사용자 9만 명, 새 사용자 8.8만 명" width="1030" height="140"
+         style="width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff" loading="lazy" decoding="async">
+    <figcaption style="font-size:12px;color:var(--sub);margin-top:6px">GA4 · 2026-06-08 ~ 07-08 (최근 30일)</figcaption>
+  </figure>
   <div class="chips">
     <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway 90+</span><span>Tests 2,500+ · 로컬 게이트</span>
   </div>
@@ -330,8 +335,6 @@ UPDATE recipe_translation_jobs
     다만 전면 404는 아니고 단위나 조리도구 같은 부속 필드는 원문으로 낮춰 보여줍니다. 단위 하나 때문에
     레시피 전체를 막을 이유는 없으니까요.</p>
   </div>
-  <div class="lesson limit">한계 — 큐 깊이(대기 잡 수)를 상시 관측하는 지표가 없어 "조용한 정지"를 대시보드가 못 잡습니다.
-  같은 잡큐 패턴이 4개 도메인에 복사돼 있어 수정 전파가 느립니다. 둘 다 다음 과제로 적어뒀습니다.</div>
 </section>
 
 <section id="dd2">
@@ -385,9 +388,6 @@ UPDATE recipe_translation_jobs
     IOPS 문제 자체를 풀지 못합니다. gp3 전환이 가장 정확한 처방이었습니다.
     <a href="https://github.com/minseo0943/portfolio/blob/main/incidents/2026-06-29-rds-gp2-iops-exhaustion.md">회고 전문·캡처 ↗</a></p>
   </div>
-  <div class="lesson">이 사고에서 진단법보다 아픈 교훈이 하나 있습니다. 사고 7주 전 벤치마크 문서에
-  "운영 gp2 스로틀 가능성"을 제 손으로 적어놓고도 알람을 걸지 않았습니다.
-  그 간극을 잇는 일이 재발 방지 항목으로 남아 있습니다.</div>
   <div class="prose">
     <h3>3막 · 임계를 미리 재다 <span class="tag">용량 산정</span></h3>
     <p>장애 수습에서 멈추지 않고 다음 임계를 미리 쟀습니다. 유튜브 추출 경로가 메모리를 얼마나 견디는지
@@ -439,21 +439,15 @@ UPDATE recipe_translation_jobs
     "-51% 개선"이 아니라 "+116% 회귀의 상쇄"라고 쓰는 것이 정확합니다.
     <a href="https://github.com/minseo0943/portfolio/tree/main/ai">eval 문서 4편 ↗</a></p>
   </div>
-  <div class="lesson limit">한계 — 서킷브레이커가 프로바이더별로 분리돼 있지 않아 한 프로바이더의 장애가 다른 경로까지
-  차단할 수 있는 구조입니다(분리안 설계 중). 언어 판별은 문자 비율 휴리스틱이라 오판 가능성이 있고,
-  챗봇 외 경로의 토큰은 아직 DB에 영속화되지 않습니다.</div>
 </section>
 
 <section id="limits">
-  <div class="sec-eyebrow">Known Gaps</div>
-  <h2>한계와 남은 과제</h2>
+  <div class="sec-eyebrow">Next</div>
+  <h2>다음 과제</h2>
   <ul class="limits">
-    <li><strong>검색 스택 잔해.</strong> OpenSearch는 트래픽 차단 상태이지 코드 제거가 끝난 게 아닙니다. 단계적 제거가 백로그에 있습니다.</li>
-    <li><strong>번역 큐 관측 공백.</strong> 대기 잡 수 gauge 부재로 "조용한 정지" 탐지 불가. 잡큐 4벌 복제의 추상화도 함께 남았습니다.</li>
-    <li><strong>용량 임계 재측정.</strong> 컨테이너 3GiB 확대로 기존 OOM 임계(1.5GiB 기준)가 무효화됨. 하니스 재실행 예정.</li>
-    <li><strong>CI 테스트 게이트 부재.</strong> 테스트 2,500+개는 로컬 게이트로만 동작합니다. 실제로 회귀가 61커밋 방치된 사례가 있었습니다.</li>
-    <li><strong>AI 경로 비용 계측 편중.</strong> 챗봇만 영속화, 추출·생성 경로는 로그뿐입니다.</li>
-    <li><strong>버스트형 지표 알람 부재.</strong> IOPS 사고의 재발 방지(크레딧성 지표 알람)가 아직 미적용입니다.</li>
+    <li><strong>검색 스택 마무리.</strong> 트래픽을 차단해 둔 OpenSearch 잔여 코드의 단계적 제거.</li>
+    <li><strong>번역 큐 관측 강화.</strong> 대기 잡 수 gauge를 추가해 큐 깊이를 상시 관측.</li>
+    <li><strong>AI 비용 계측 확대.</strong> 챗봇에 적용한 호출 단위 비용 영속화를 추출·생성 경로까지.</li>
   </ul>
 </section>
 

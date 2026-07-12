@@ -149,6 +149,13 @@
   .lesson.limit{border-left-color:var(--warn);background:var(--warn-bg)}
   .prose a,.ev a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 
+  .service-cta{display:inline-flex;align-items:center;gap:9px;margin-top:14px;
+    padding:8px 14px;background:var(--card);border:1px solid var(--line);border-radius:6px;
+    font-size:13px;color:var(--ink)}
+  .service-cta img{border-radius:5px;display:block}
+  .service-cta b{color:var(--accent)}
+  .service-cta:hover{border-color:var(--accent);text-decoration:none}
+
   @media print{
     nav{display:none} body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     section{margin-top:48px} .pending{display:none}
@@ -210,6 +217,13 @@
 <section id="timeline">
   <div class="sec-eyebrow">Service &amp; Timeline</div>
   <h2>서비스 개요와 타임라인</h2>
+  <p class="prose" style="margin-top:14px">Recipio(해먹)는 유튜브 요리 영상을 구조화된 레시피로 추출하고
+  텍스트로도 생성하는 AI 레시피 서비스입니다. 한국어·일본어·영어 3개 언어로 서빙하며
+  검색·추천·요리 기록·챗봇과 쿠팡 파트너스 연동을 제공합니다.</p>
+  <a class="service-cta" href="https://www.recipio.kr" target="_blank" rel="noopener">
+    <img src="recipio-logo.png" alt="Recipio 로고" width="22" height="22">
+    <span><b>www.recipio.kr</b> — 라이브 서비스 ↗</span>
+  </a>
   <div class="chips">
     <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway 90+</span><span>Tests 2,500+ · 로컬 게이트</span>
   </div>

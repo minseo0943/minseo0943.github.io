@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>장민서 — Backend Engineer</title>
-<meta name="description" content="월 활성 사용자 9만 레시피 플랫폼 Recipio의 백엔드 2년 차 운영 기록 — 검색 p95 1,902→456ms, AI 추출 비용 20.7→2.3~5원/건, 번역 잡 106,938건, 장애 2건 진단·복구.">
+<meta name="description" content="2026년 7월 GA4 30일 스냅숏 기준 활성 사용자 약 9만 명인 레시피 플랫폼 Recipio의 백엔드 운영 기록 — 검색 p95 1,902→456ms, AI 추출 환산 단가 20.7→2.3~5원/건, 번역 잡 106,938건, 장애 2건 진단·복구.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="장민서 — Backend Engineer">
 <meta property="og:description" content="서비스 하나를 2년째. 만들고 운영하고 복구했습니다 — 증거가 남아 있는 것만 담은 포트폴리오.">
@@ -182,7 +182,7 @@
 <header>
   <div class="eyebrow">Backend Engineer · Portfolio</div>
   <h1>서비스 하나를 <b>2년째</b>.<br>만들고 운영하고 복구했습니다.</h1>
-  <p class="lede">레시피 플랫폼 Recipio(해먹)는 캡스톤에서 시작해 지금까지 운영 중인 팀 서비스입니다.
+  <p class="lede">레시피 플랫폼 레시피오(Recipio)는 캡스톤에서 시작해 지금까지 운영 중인 팀 서비스입니다.
   3인 팀(백엔드 2 · 프론트 1)에서 백엔드를 맡아 만들고 운영해왔습니다.
   트래픽이 생기면서 성능 문제와 장애를 겪었고 AI API 청구서도 줄여야 했습니다.
   이 문서에는 그 과정에서 <strong>증거가 남아 있는 것만</strong> 담았습니다.</p>
@@ -191,8 +191,8 @@
   <div class="stats">
     <div class="stat">
       <div class="v">106,938<small> 잡</small></div>
-      <div class="k">번역 파이프라인 처리 · 실패 0.02%</div>
-      <div class="m">prod 스냅숏 2026-07</div>
+      <div class="k">번역 파이프라인 처리 · FAILED 잔여 25건</div>
+      <div class="m">prod 스냅숏 2026-07 · 전체의 0.02%</div>
     </div>
     <div class="stat">
       <div class="v">1,902 → 456<small> ms</small></div>
@@ -201,8 +201,8 @@
     </div>
     <div class="stat">
       <div class="v">20.7 → 2.3~5<small> 원/건</small></div>
-      <div class="k">AI 추출 비용 · 언어 기반 라우팅</div>
-      <div class="m">단가 n=192 실측 · 절감률 추정</div>
+      <div class="k">AI 추출 환산 단가 · 언어 기반 라우팅</div>
+      <div class="m">호출 로그·당시 단가 환산 · 절감률 추정</div>
     </div>
   </div>
 
@@ -216,21 +216,21 @@
 <section id="timeline">
   <div class="sec-eyebrow">Service &amp; Timeline</div>
   <h2>서비스 개요와 타임라인</h2>
-  <p class="prose" style="margin-top:14px">Recipio(해먹)는 유튜브 요리 영상을 구조화된 레시피로 추출하고
+  <p class="prose" style="margin-top:14px">레시피오(Recipio)는 유튜브 요리 영상을 구조화된 레시피로 추출하고
   텍스트로도 생성하는 AI 레시피 서비스입니다. 한국어·일본어·영어 3개 언어로 서빙하며
   검색·추천·요리 기록·챗봇과 쿠팡 파트너스 연동을 제공합니다.
-  월 활성 사용자는 약 9만 명입니다.</p>
+  2026년 6월 8일~7월 8일 GA4 기준 활성 사용자는 약 9만 명입니다.</p>
   <a class="service-cta" href="https://www.recipio.kr" target="_blank" rel="noopener">
     <img src="recipio-logo.png" alt="Recipio 로고" width="22" height="22">
     <span><b>www.recipio.kr</b> — 라이브 서비스 ↗</span>
   </a>
   <figure style="margin:16px 0 0;max-width:560px">
-    <img src="traffic-ga4.png" alt="GA4 최근 30일 — 활성 사용자 9만 명, 새 사용자 8.8만 명" width="1030" height="140"
+    <img src="traffic-ga4.png" alt="GA4 2026년 6월 8일~7월 8일 — 활성 사용자 9만 명, 새 사용자 8.8만 명" width="1030" height="140"
          style="width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff" loading="lazy" decoding="async">
-    <figcaption style="font-size:12px;color:var(--sub);margin-top:6px">GA4 · 2026-06-08 ~ 07-08 (최근 30일)</figcaption>
+    <figcaption style="font-size:12px;color:var(--sub);margin-top:6px">GA4 · 2026.06.08~07.08 30일 스냅숏</figcaption>
   </figure>
   <div class="chips">
-    <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway 90+</span><span>Tests 2,500+ · 로컬 게이트</span>
+    <span>Spring Boot 3 · Java 17</span><span>MySQL 8 (RDS)</span><span>Flyway 기반 스키마 관리</span><span>Tests 2,500+ · 로컬 게이트</span>
   </div>
   <figure style="margin:26px 0 8px">
   <a href="architecture-v3.png" target="_blank" rel="noopener">
@@ -275,7 +275,8 @@
     2026년, 프리티어 종료로 비용 부담이 커지자 팀은 제거를 결정했습니다. 제 역할은 <strong>"MySQL만으로 버틸 수 있는가"의 검증</strong>이었습니다.
     10만 건·동시 8 조건에서 LIKE p95가 1,902ms, 튜닝한 MySQL 경로가 456ms로 기준 500ms를 통과해
     제거 가능으로 판정했습니다. ko 메인 검색의 ngram FULLTEXT 전환 구현은 팀원의 작업이고 저는 그 위에
-    다국어 검색 코퍼스와 장애 대응 경로를 만들었습니다. 검색엔진 재도입 판단 기준(형태소 분석·동의어 요구 발생 시)도
+    다국어 검색 코퍼스와 장애 대응 경로를 만들었습니다. 검증 이후 팀원이 OpenSearch 런타임 통합을 제거해
+    현재 검색은 MySQL·QueryDSL 단일 경로로 동작합니다. 검색엔진 재도입 판단 기준(형태소 분석·동의어 요구 발생 시)도
     문서로 남겼습니다. <a href="https://github.com/minseo0943/portfolio/blob/main/adr/0006-mysql-querydsl-search-optimization.md">ADR-0006 ↗</a></p>
   </div>
 </section>
@@ -288,7 +289,7 @@
   <div class="prose">
     <p>2년 차, 서비스를 일본어·영어권으로 확장하기로 했습니다. 레시피 본문·재료명·단위·댓글까지,
     대상은 레시피 번역 잡만 누적 10만 7천 건입니다. 요청 시점 번역으로는 감당할 수 없는 규모였습니다.
-    이 파이프라인은 설계와 구현을 제가 주도했습니다(i18n 경로 커밋 32:6, 2026-07 main 기준).</p>
+    이 파이프라인의 설계와 구현을 제가 주도했습니다.</p>
     <p>번역 그 자체는 API 호출 한 번입니다. 어려운 건 실패 쪽이라 이 작업을 비동기 잡·상태 기계·복구
     수단의 문제로 정의했습니다. 운영해 보면 AI 번역은 부분적으로, 지난번과 같은 방식으로 또 실패합니다.</p>
 
@@ -391,9 +392,9 @@ UPDATE recipe_translation_jobs
   <div class="prose">
     <h3>3막 · 임계를 미리 재다 <span class="tag">용량 산정</span></h3>
     <p>장애 수습에서 멈추지 않고 다음 임계를 미리 쟀습니다. 유튜브 추출 경로가 메모리를 얼마나 견디는지
-    보려고 운영과 동일한 1.5GiB 컨테이너를 재현해 부하를 걸었고 <strong>동시 20건에서 OOM kill(exit 137)</strong>이라는
-    임계를 얻었습니다. 결론은 "스레드풀을 늘리지 말 것". 이후 팀이 컨테이너 메모리를 3GiB로 늘려서 이 수치는
-    재측정이 필요해졌습니다. 측정 하니스는 재현 가능하게 남아 있어 다시 돌리면 됩니다.
+    보려고 운영과 같은 1.5GiB 메모리·1GiB JVM 힙 제한을 로컬 Docker에 재현해 부하를 걸었습니다. 강제 동시 20건과 분산 투입 시 동시 진행
+    약 15건에서 OOM kill(exit 137)을 확인해 <strong>안전 목표를 약 12건</strong>으로 판단했습니다. 이후 팀이 컨테이너
+    메모리를 3GiB로 늘려서 이 수치는 재측정이 필요해졌습니다. 측정 하니스는 비공개 서비스 레포에 남겨두었습니다.
     <a href="https://github.com/minseo0943/portfolio/blob/main/performance/youtube-extraction-capacity.md">측정 문서 ↗</a></p>
   </div>
 </section>
@@ -402,7 +403,7 @@ UPDATE recipe_translation_jobs
   <div class="sec-eyebrow">Deep Dive 03 · AI Cost Engineering</div>
   <h2>1년, 5개 프로바이더</h2>
   <div class="lesson" style="margin-top:18px">결론 — 추출 1건당 AI 비용 20.7 → 2.3~5원. 한국어는 자막 복원력이 검증된
-  Gemini로, 그 외 언어는 DeepSeek으로 보내는 언어 라우팅이 만든 숫자입니다(단가 실측 n=192 · 절감률 추정).</div>
+  Gemini로, 그 외 언어는 DeepSeek으로 보내는 언어 라우팅이 만든 숫자입니다(Gemini·DeepSeek n=192 비교 · Grok 운영 기준점 · 절감률 추정).</div>
   <div class="strip">
     <span class="p">OpenAI <span class="tag">2025-06</span></span><span class="arr">→</span>
     <span class="p">Claude <span class="tag">실험·복귀</span></span><span class="arr">→</span>
@@ -424,14 +425,11 @@ UPDATE recipe_translation_jobs
     그 외 언어는 DeepSeek(2.3원)입니다. 배포는 기본값을 기존 Grok으로 둔 hidden deploy로 하고 설정 전환으로
     활성화했습니다. 설계 기준 비용은 기존 대비 약 1/5 수준입니다.
     다만 일 100건 가정의 추정이라 청구서 검증을 진행할 예정입니다.
-    <a href="https://github.com/minseo0943/portfolio/blob/main/ai/youtube-step1-model-report.html">비교 리포트 ↗</a></p>
+    <a href="https://github.com/minseo0943/portfolio/blob/main/ai/README.md">비교 리포트 요약·근거 ↗</a></p>
     <h3>측정이 계속되게 만들기</h3>
-    <p>일회성 비교로 끝나지 않도록 챗봇 경로는 호출당 토큰(입력/캐시/출력)·지연·프롬프트 버전·추정 비용을
-    DB에 영속화했습니다. 실제로 사후 SQL 한 벌이면 이런 답이 나옵니다(2026-07 운영 스냅숏): 누적 494콜,
-    호출당 평균 ₩0.46, v6→v7.2에서 p50 1,994→1,630ms · p95 6,414→4,534ms · Pro 모델 호출률 93.1→87.3%.
-    통제 실험은 아니지만 운영 분포에서도 최종 버전에 지연 회귀가 없다는 걸 이 데이터로 확인했습니다.
-    프롬프트는 버전 있는 리소스 파일로 관리하고 버전 라벨을 파일명에서 유도해 기록과 실체가
-    어긋나지 않게 했습니다.</p>
+    <p>일회성 비교로 끝나지 않도록 챗봇 경로는 호출당 토큰·지연·프롬프트 버전·추정 비용을 DB에 영속화했습니다.
+    2026-07 운영 스냅숏에서 누적 494콜과 호출당 평균 ₩0.46을 확인했고, 프롬프트 버전별 지연도 비교할 수 있게 했습니다.
+    통제 실험은 아니므로 운영 수치는 회귀 여부를 살피는 보조 지표로만 사용했습니다.</p>
     <h3>폐기 문서도 결과다</h3>
     <p>챗봇 프롬프트 개선은 4연속 통제 실험(단일 변수씩)으로 진행했습니다. 1차 실험은 "효과 없음"으로 판정하고
     폐기 문서로 남겼습니다. 판정 자체가 실험의 목적이었기 때문입니다. 3차의 안전 강화 프롬프트는
@@ -445,16 +443,16 @@ UPDATE recipe_translation_jobs
   <div class="sec-eyebrow">Next</div>
   <h2>다음 과제</h2>
   <ul class="limits">
-    <li><strong>검색 스택 마무리.</strong> 트래픽을 차단해 둔 OpenSearch 잔여 코드의 단계적 제거.</li>
+    <li><strong>용량 재측정.</strong> 3GiB 환경에서 유튜브 추출의 안전 동시성 다시 산정.</li>
     <li><strong>번역 큐 관측 강화.</strong> 대기 잡 수 gauge를 추가해 큐 깊이를 상시 관측.</li>
-    <li><strong>AI 비용 계측 확대.</strong> 챗봇에 적용한 호출 단위 비용 영속화를 추출·생성 경로까지.</li>
+    <li><strong>AI 비용 검증 마무리.</strong> 생성·추출·분석 경로의 토큰·호출·지연 지표를 실제 청구서와 대조하고 호출별 비용 저장까지 확대.</li>
   </ul>
 </section>
 
 <section id="profile">
   <div class="sec-eyebrow">Education &amp; Awards</div>
   <h2 style="font-size:16px;margin-bottom:4px">학력과 수상</h2>
-  <p style="font-size:13.5px;color:var(--sub)">세종대학교 소프트웨어학과 (2019.03–2025.08) · SMART Tournament 장려상(사물인터넷 혁신융합대학, 2025.06) · 세종대 해커톤 4위(2025.06)</p>
+  <p style="font-size:13.5px;color:var(--sub)">세종대학교 소프트웨어학과 (2019.03–2025.08) · SMART Tournament 장려상(사물인터넷 혁신융합대학, 2025.06) · 세종대 해커톤 4위(2025.06.11)</p>
 </section>
 
 <footer>

@@ -9,7 +9,7 @@
 <meta property="og:title" content="장민서 — Backend Engineer">
 <meta property="og:description" content="서비스 하나를 2년째. 만들고 운영하고 복구했습니다 — 증거가 남아 있는 것만 담은 포트폴리오.">
 <meta property="og:url" content="https://minseo0943.github.io/">
-<meta property="og:image" content="https://minseo0943.github.io/og-cover.png?v=20260907">
+<meta property="og:image" content="https://minseo0943.github.io/og-cover.png?v=20260907-2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="장민서 — Backend Engineer 포트폴리오 표지">
@@ -131,11 +131,6 @@
   .strip .p.now{border-color:var(--accent);color:var(--accent);font-weight:700}
   .strip .arr{color:var(--sub)}
 
-  /* limits */
-  ul.limits{max-width:660px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px}
-  ul.limits li{padding-left:18px;position:relative;font-size:14.5px}
-  ul.limits li::before{content:"—";position:absolute;left:0;color:var(--warn)}
-
   footer{margin-top:110px;padding-top:18px;border-top:1px solid var(--line);
     font-family:var(--mono);font-size:12px;color:var(--sub);display:flex;justify-content:space-between;
     flex-wrap:wrap;gap:8px}
@@ -173,8 +168,7 @@
     <a href="#timeline">타임라인</a> ·
     <a href="#dd1">i18n 파이프라인</a> ·
     <a href="#dd2">장애 연작</a> ·
-    <a href="#dd3">AI 비용</a> ·
-    <a href="#limits">다음 과제</a>
+    <a href="#dd3">AI 비용</a>
   </span>
 </div></nav>
 <main>
@@ -437,16 +431,6 @@ UPDATE recipe_translation_jobs
     "-51% 개선"이 아니라 "+116% 회귀의 상쇄"라고 쓰는 것이 정확합니다.
     <a href="https://github.com/minseo0943/portfolio/tree/main/ai">eval 문서 4편 ↗</a></p>
   </div>
-</section>
-
-<section id="limits">
-  <div class="sec-eyebrow">Next</div>
-  <h2>다음 과제</h2>
-  <ul class="limits">
-    <li><strong>용량 재측정.</strong> 3GiB 환경에서 유튜브 추출의 안전 동시성 다시 산정.</li>
-    <li><strong>번역 큐 관측 강화.</strong> 대기 잡 수 gauge를 추가해 큐 깊이를 상시 관측.</li>
-    <li><strong>AI 비용 검증 마무리.</strong> 생성·추출·분석 경로의 토큰·호출·지연 지표를 실제 청구서와 대조하고 호출별 비용 저장까지 확대.</li>
-  </ul>
 </section>
 
 <section id="profile">
